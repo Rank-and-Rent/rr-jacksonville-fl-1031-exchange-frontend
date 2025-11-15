@@ -1,0 +1,16 @@
+{
+  "company": "1031 Exchange Jacksonville",
+  "phone": "",
+  "phoneDigits": "",
+  "mainCity": "Jacksonville",
+  "state": "FL",
+  "services": [],
+  "servicesNav": [],
+  "locationsNav": [],
+  "extraLinks": [
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ]
+}
