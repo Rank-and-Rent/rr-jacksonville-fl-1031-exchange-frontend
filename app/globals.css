@@ -1,3 +1,363 @@
-@tailwind base; @tailwind components; @tailwind utilities;
-:root { color-scheme: light; } html, body { height: 100%; } body { background-color: #F9FAFB; color: #1F2937; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-:where(a,button,[role="button"],input,select,textarea):focus-visible { outline:2px solid #003366; outline-offset:2px; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Allura&display=swap');
+
+:root {
+  color-scheme: dark;
+  --color-charcoal: #1a1a1a;
+  --color-charcoal-light: #2a2a2a;
+  --color-cream: #f5f1eb;
+  --color-gold: #c9a962;
+  --color-gold-light: #dfc78a;
+  --font-cursive: 'Allura', cursive;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+}
+
+html, body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-charcoal);
+  color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:where(a,button,[role="button"],input,select,textarea):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Cursive Logo Style */
+.logo-cursive {
+  font-family: var(--font-cursive);
+  font-size: 2.5rem;
+  color: white;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* Display Font */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Video Background */
+.video-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.video-hero video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.video-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+}
+
+/* Property Types Carousel */
+.property-carousel {
+  perspective: 1000px;
+}
+
+.property-item {
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center center;
+}
+
+.property-item.active {
+  transform: scale(1.1) translateZ(50px);
+}
+
+.property-item.prev,
+.property-item.next {
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+/* Rotating Text Animation */
+@keyframes textFlipIn {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes textFlipOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%) rotateX(90deg);
+  }
+}
+
+.text-flip-enter {
+  animation: textFlipIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.text-flip-exit {
+  animation: textFlipOut 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Gold Underline Animation */
+.gold-underline {
+  position: relative;
+}
+
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.gold-underline:hover::after {
+  width: 100%;
+}
+
+/* Navigation Styles */
+.nav-link {
+  position: relative;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-gold);
+}
+
+/* Button Styles */
+.btn-luxury {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: var(--color-charcoal);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-luxury:hover {
+  background: var(--color-charcoal-light);
+}
+
+.btn-luxury svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-luxury:hover svg {
+  transform: translateX(4px);
+}
+
+/* Carousel Navigation */
+.carousel-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn svg {
+  color: var(--color-gold);
+  width: 20px;
+  height: 20px;
+}
+
+/* Section Divider */
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--color-gold);
+}
+
+/* Neighborhood Card Hover */
+.neighborhood-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.neighborhood-card:hover {
+  transform: translateY(-8px);
+}
+
+.neighborhood-card img {
+  transition: transform 0.6s ease;
+}
+
+.neighborhood-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Let's Connect Button */
+.connect-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Newsletter Input */
+.newsletter-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  color: var(--color-charcoal);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.newsletter-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.newsletter-input:focus {
+  border-color: var(--color-gold);
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+/* Smooth Scroll Container */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Image Loading Shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.image-loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-charcoal) 0%,
+    var(--color-charcoal-light) 50%,
+    var(--color-charcoal) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-charcoal);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Media Queries for Responsive Typography */
+@media (min-width: 768px) {
+  .logo-cursive {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-cursive {
+    font-size: 3.5rem;
+  }
+}

@@ -2,47 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
-import { Inter, Playfair_Display } from "next/font/google";
 import ContactForm from "@/components/contact-form";
-import {
-  ArrowRight,
-  Boxes,
-  Briefcase,
-  Building2,
-  Calculator,
-  CalendarClock,
-  CheckCircle2,
-  Compass,
-  DollarSign,
-  FileCheck2,
-  Handshake,
-  Layers3,
-  LineChart,
-  Map,
-  MapPin,
-  PhoneCall,
-  Scale,
-  ShieldCheck,
-  Sparkles,
-  Store,
-  TreePine,
-  TrendingUp,
-} from "lucide-react";
-import { servicesData } from "@/data/services";
 import { locationsData } from "@/data/locations";
-import { inventorySpotlight01 } from "@/data/batches/inventory/batch-01";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
+import PropertyTypesCarousel from "@/components/property-types-carousel";
+import ConnectButton from "@/components/connect-button";
 
 const SITE_URL = "https://www.1031exchangeofjacksonville.com/";
 const ADDRESS = "200 W Forsyth St, Jacksonville, FL 32202";
@@ -53,29 +16,17 @@ const PHONE = {
 const EMAIL = "exchange@1031exchangeofjacksonville.com";
 const COMPANY_NAME = "1031 Exchange of Jacksonville";
 
-type LucideIconComponent = typeof ShieldCheck;
-
-type FeatureCard = {
-  title: string;
-  description: string;
-  icon: LucideIconComponent;
-};
-
-type ServiceCard = FeatureCard & { href: string };
-
-type PropertyType = FeatureCard & { image?: string };
-
 export const metadata: Metadata = {
-  title: "Jacksonville 1031 Exchange Experts | Florida Qualified Intermediary Network",
+  title: "Jacksonville 1031 Exchange | Florida Tax-Deferred Property Specialists",
   description:
-    "1031 exchange guidance for investors across Jacksonville and North Florida. Local intermediary partnerships, CPA and attorney coordination, and IRS-compliant timelines.",
+    "Premier 1031 exchange services in Jacksonville, FL. Defer capital gains taxes on investment property with our expert guidance. Serving North Florida investors since 2010.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "Jacksonville 1031 Exchange Experts",
+    title: "Jacksonville 1031 Exchange | Florida Tax-Deferred Property Specialists",
     description:
-      "Trusted 1031 specialists for Florida real estate investors. Local expertise, precise execution, and transparent process management.",
+      "Premier 1031 exchange services in Jacksonville. Defer capital gains taxes with our expert guidance and local market knowledge.",
     url: SITE_URL,
     siteName: COMPANY_NAME,
     images: ["/og-image.png"],
@@ -83,170 +34,45 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jacksonville 1031 Exchange Experts",
+    title: "Jacksonville 1031 Exchange | Tax-Deferred Property Experts",
     description:
       "Defer capital gains taxes with an IRS-compliant 1031 exchange. Serving Jacksonville, St. Augustine, and investors across Florida.",
     images: ["/og-image.png"],
   },
 };
 
-const trustItems: FeatureCard[] = [
+const neighborhoods = [
   {
-    title: "CPA Partner",
-    description: "Audit-ready reporting",
-    icon: FileCheck2,
+    name: "Jacksonville",
+    slug: "jacksonville-fl",
+    image: "/locations/jacksonville-1031-exchange.jpg",
   },
   {
-    title: "Qualified Intermediary Network",
-    description: "Bonded coverage",
-    icon: ShieldCheck,
+    name: "St. Augustine",
+    slug: "st-augustine-fl",
+    image: "/locations/st-augustine-fl-1031-exchange.jpg",
   },
   {
-    title: "Attorney Coordination",
-    description: "Florida compliance",
-    icon: Scale,
+    name: "Ponte Vedra Beach",
+    slug: "ponte-vedra-beach-fl",
+    image: "/locations/ponte-vedra-beach-fl-1031-exchange.jpg",
   },
   {
-    title: "Local Expertise",
-    description: "North Florida advisors",
-    icon: MapPin,
+    name: "Amelia Island",
+    slug: "amelia-island-fl",
+    image: "/locations/amelia-island-1031-exchange.jpg",
   },
   {
-    title: "IRS-Compliant Process",
-    description: "Tight deadline control",
-    icon: CheckCircle2,
-  },
-];
-
-const whyCards: FeatureCard[] = [
-  {
-    title: "Statewide Florida insight",
-    description:
-      "We speak the language of Jacksonville, Miami, Orlando, and every coastal submarket investors target.",
-    icon: MapPin,
+    name: "San Marco",
+    slug: "san-marco-fl",
+    image: "/locations/san-marco-1031-exchange.jpg",
   },
   {
-    title: "Qualified intermediary oversight",
-    description:
-      "Direct access to trusted QI partners safeguards escrow handling and Section 1031 documentation.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "CPA and attorney collaboration",
-    description:
-      "Shared workspaces keep tax advisors, real estate counsel, and title teams aligned at each milestone.",
-    icon: Scale,
-  },
-  {
-    title: "Transparent milestones",
-    description:
-      "Countdown dashboards map the 45-day identification and 180-day closing checkpoints for every exchange.",
-    icon: FileCheck2,
-  },
-  {
-    title: "Local responsiveness",
-    description:
-      "Jacksonville-based coordinators keep investors informed in plain English, without jargon or surprises.",
-    icon: PhoneCall,
+    name: "Riverside",
+    slug: "riverside-fl",
+    image: "/locations/riverside-1031-exchange.jpg",
   },
 ];
-
-const processSteps: FeatureCard[] = [
-  {
-    title: "Sell your relinquished property",
-    description:
-      "Open escrow with a bonded Florida 1031 intermediary before closing funds are received.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Identify replacement by Day 45",
-    description:
-      "Document up to three properties or use the 200 percent rule with written notices to your intermediary.",
-    icon: Compass,
-  },
-  {
-    title: "Close within 180 days",
-    description:
-      "Coordinate lenders, title, and counsel to fund the new purchase before the 180th day expires.",
-    icon: CalendarClock,
-  },
-];
-
-const topHomepageServices = servicesData.slice(0, 6);
-const services: ServiceCard[] = topHomepageServices.map((service, index) => {
-  const icons = [Layers3, Compass, ShieldCheck, CalendarClock, Handshake, LineChart];
-  return {
-    title: service.name,
-    description: service.short,
-    icon: icons[index % icons.length],
-    href: service.route,
-  };
-});
-
-const propertyTypes: PropertyType[] = [
-  {
-    title: "Multifamily communities",
-    description:
-      "Garden, mid-rise, and mixed-income properties across Duval, Clay, and St. Johns counties.",
-    icon: Building2,
-    image: "/inventory/multifamily-1031-exchange.jpg",
-  },
-  {
-    title: "Retail and Triple Net Lease Properties",
-    description:
-      "Coastal strip centers, single-tenant triple net lease properties, and hospitality assets near ports and interstates. NNN investments feature creditworthy corporate tenants who cover property expenses, providing stable passive income with minimal landlord responsibilities.",
-    icon: Store,
-    image: "/inventory/retail-1031-exchange.jpg",
-  },
-  {
-    title: "Medical and professional office",
-    description:
-      "Health campuses, surgery centers, and professional condos with long-term credit tenants.",
-    icon: Briefcase,
-    image: "/inventory/medical-office-1031-exchange.jpg",
-  },
-  {
-    title: "Industrial and logistics",
-    description:
-      "Warehouse, flex, and cold storage sites supporting JAXPORT, Cecil Commerce, and I-95 corridors.",
-    icon: Boxes,
-    image: "/inventory/industrial-1031-exchange.jpg",
-  },
-  {
-    title: "Hospitality and resort assets",
-    description:
-      "Boutique hotels, marinas, and coastal resorts balancing leisure demand with operational controls.",
-    icon: Map,
-    image: "/inventory/hospitality-resort-1031-exchange.jpg",
-  },
-  {
-    title: "Land and agricultural",
-    description:
-      "Timber, transitional land, and conservation swaps that demand precise eligibility guidance.",
-    icon: TreePine,
-    image: "/inventory/land-agricultural-1031-exchange.jpg",
-  },
-];
-
-const irsResources = [
-  {
-    label: "IRS Form 8824",
-    href: "https://www.irs.gov/forms-pubs/about-form-8824",
-  },
-  {
-    label: "Like-Kind Property Rules",
-    href: "https://www.irs.gov/businesses/small-businesses-self-employed/like-kind-exchanges-real-estate-tax-tips",
-  },
-  {
-    label: "Rev. Proc. 2008-16 Safe Harbor",
-    href: "https://www.irs.gov/irb/2008-04_IRB#RP-2008-16",
-  },
-];
-
-const topHomepageLocations = [
-  locationsData.find((l) => l.slug === "jacksonville-fl"),
-  ...locationsData.filter((l) => l.slug !== "jacksonville-fl" && l.type !== "remote").slice(0, 7),
-].filter(Boolean) as typeof locationsData;
 
 const faqItems = [
   {
@@ -280,8 +106,6 @@ const faqItems = [
       "Form 8824 summarizes the relinquished and replacement properties, dates, boot received, and gain deferred. Your CPA files it with your federal return and keeps backup schedules from your intermediary.",
   },
 ];
-
-const hasStaffedOffice = false;
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -325,35 +149,37 @@ const faqJsonLd = {
   })),
 };
 
-function WaveDivider({ flip = false }: { flip?: boolean }) {
+function ArrowIcon({ className = "" }: { className?: string }) {
   return (
     <svg
-      aria-hidden="true"
-      viewBox="0 0 1440 80"
-      preserveAspectRatio="none"
-      className={`h-16 w-full text-[#E6F2FF] ${flip ? "rotate-180" : ""}`}
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <path
-        fill="currentColor"
-        d="M0,32L80,37.3C160,43,320,53,480,58.7C640,64,800,64,960,58.7C1120,53,1280,43,1360,37.3L1440,32V80H1360C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80H0Z"
-      />
+      <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   );
 }
 
-function SectionEyebrow({ children }: { children: string }) {
+function ChevronIcon({ direction = "down" }: { direction?: "up" | "down" }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#F5B800]">
-      {children}
-    </p>
-  );
-}
-
-function IconBadge({ icon: Icon }: { icon: LucideIconComponent }) {
-  return (
-    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/60 text-[#003366] shadow-sm ring-1 ring-white/50">
-      <Icon className="h-6 w-6" aria-hidden="true" />
-    </span>
+    <svg
+      className={`w-4 h-4 transition-transform ${direction === "up" ? "rotate-180" : ""}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
   );
 }
 
@@ -362,522 +188,225 @@ export default function HomePage() {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#003366] focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#1a1a1a] focus:shadow-lg"
       >
         Skip to main content
       </a>
-      <div
-        className={`${inter.className} ${playfair.variable} bg-[#F9FAFB] text-[#1F2937]`}
-      >
+
         <main id="main-content">
-        <section
-          id="hero"
-          className="relative overflow-hidden bg-gradient-to-b from-white via-[#E4F1FF] to-[#F9FAFB] pb-24 pt-16"
-        >
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#C9E6FF]/30 to-transparent" />
-          <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 md:flex-row md:px-10">
-            <div
-              className="flex-1 space-y-8"
-              data-animate="fade-right"
-            >
-              <SectionEyebrow>Florida coastal confidence</SectionEyebrow>
-              <h1
-                className={`${playfair.className} text-4xl font-semibold leading-[1.15] tracking-tight text-[#003366] md:text-5xl`}
-              >
-                Jacksonville 1031 Exchange Experts
-              </h1>
-              <p className="text-lg leading-relaxed text-[#1F2937]/80">
-                Florida investors rely on us to navigate every stage of a 1031 exchange, from
-                structuring relinquished sales to coordinating qualified intermediaries and keeping the
-                45-day identification and 180-day closing deadlines on track.
-              </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <Link
-                  href="#lead-form"
-                  className="inline-flex items-center justify-center rounded-full bg-[#003366] px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white shadow-lg shadow-[#003366]/25 transition hover:bg-[#01264f]"
-                >
-                  Start My Exchange
-                </Link>
-                <a
-                  href={`tel:${PHONE.dial}`}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#003366] px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-white/80"
-                >
-                  <PhoneCall className="h-4 w-4" aria-hidden="true" />
-                  Call {PHONE.formatted}
-                </a>
-              </div>
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#003366]">
-                45 day identification. 180 day closing. We help you stay on schedule.
-              </p>
-              <div className="flex flex-wrap gap-6">
-                <div className="flex items-start gap-3">
-                  <span className="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-[#F5B800] shadow">
-                    <Sparkles className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="font-semibold text-[#003366]">Florida 1031 intermediary</p>
-                    <p className="text-sm text-[#1F2937]/70">
-                      Jacksonville-based coordinators and statewide partners.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-white/70 text-[#003366] shadow">
-                    <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="font-semibold text-[#003366]">Qualified intermediary Jacksonville</p>
-                    <p className="text-sm text-[#1F2937]/70">
-                      Bonded partners with segregated escrow and E&O coverage.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="rounded-3xl border border-white/60 bg-white/80 p-6 shadow-lg shadow-[#0b3b64]/10 lg:hidden"
-                data-animate="fade-up"
-              >
-                <p className="text-sm text-[#1F2937]/80">
-                  Need to send details from your phone? Email{" "}
-                  <a
-                    href={`mailto:${EMAIL}`}
-                    className="font-semibold text-[#003366]"
-                  >
-                    {EMAIL}
-                  </a>{" "}
-                  or call {PHONE.formatted}. A coordinator will return a secure intake link.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-1 justify-end">
-              <div
-                id="lead-form"
-                className="hidden w-full max-w-lg rounded-3xl border border-white/50 bg-white/85 p-8 shadow-2xl shadow-[#0b3b64]/20 backdrop-blur-2xl lg:block"
-                data-animate="fade-left"
-              >
-                <h2
-                  className={`${playfair.className} text-2xl font-semibold tracking-tight text-[#003366]`}
-                >
-                  Request 1031 guidance
-                </h2>
-                <p className="mt-2 text-sm text-[#1F2937]/70">
-                  Educational content only. Not tax or legal advice.
-                </p>
-                <div className="mt-6">
-                  <ContactForm showTitle={false} className="!border-0 !shadow-none !p-0" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <WaveDivider />
-        </section>
+        {/* Hero Section with Video Background */}
+        <section className="video-hero relative h-screen min-h-[700px] flex items-center justify-center">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            poster="/locations/jacksonville-1031-exchange.jpg"
+          >
+            <source src="/jags lova.mp4" type="video/mp4" />
+          </video>
 
-        <section className="bg-[#003366] py-8 text-white" data-animate="fade-up">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-6 md:px-10">
-            {trustItems.map((item) => (
-              <div key={item.title} className="flex items-center gap-3">
-                <IconBadge icon={item.icon} />
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#F5B800]">
-                    {item.title}
-                  </p>
-                  <p className="text-sm text-white/80">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="why-us" className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="max-w-3xl space-y-4" data-animate="fade-right">
-              <SectionEyebrow>Why Florida investors choose us</SectionEyebrow>
-              <h2
-                className={`${playfair.className} text-4xl font-semibold leading-[1.15] tracking-tight text-[#003366]`}
-              >
-                Florida clarity, transparent milestones, and coastal confidence
-              </h2>
-              <p className="text-lg text-[#1F2937]/80">
-                We orchestrate the full exchange lifecycle so investors can focus on acquisitions.
-                Every deliverable is documented, every partner looped in, and every escrow protected.
-              </p>
-            </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {whyCards.map((card) => (
-                <article
-                  key={card.title}
-                  className="rounded-3xl border border-[#E5E7EB] bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                  data-animate="fade-up"
-                >
-                  <IconBadge icon={card.icon} />
-                  <h3 className="mt-4 text-xl font-semibold text-[#003366]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#1F2937]/80">
-                    {card.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-            <p className="mt-10 rounded-2xl bg-[#F9FAFB] p-6 text-sm text-[#1F2937]/80">
-              A 1031 exchange defers federal and Florida income tax on qualifying real property. It
-              does not remove documentary stamp or transfer fees.{" "}
-              <a
-                href="https://floridarevenue.com/taxes/taxesfees/pages/doc_stamp.aspx"
-                target="_blank"
-                rel="noreferrer"
-                className="font-semibold text-[#003366] underline decoration-[#F5B800] decoration-2 underline-offset-4"
-              >
-                Review Florida transfer tax guidance
-              </a>
-              .
+          <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-white/80 mb-6">
+              Florida&apos;s Premier 1031 Exchange Specialists
             </p>
-          </div>
-        </section>
 
-        <section id="process" className="bg-[#F9FAFB] py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="max-w-3xl" data-animate="fade-right">
-              <SectionEyebrow>How a 1031 works</SectionEyebrow>
-              <h2
-                className={`${playfair.className} mt-3 text-3xl font-semibold leading-tight tracking-tight text-[#003366]`}
-              >
-                Horizontal clarity for every deadline
-              </h2>
-            </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {processSteps.map((step, index) => (
-                <article
-                  key={step.title}
-                  className="relative rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm"
-                  data-animate="fade-up"
-                  style={{ transitionDelay: `${index * 0.1}s` }}
-                >
-                  <div className="flex items-center justify-between">
-                    <IconBadge icon={step.icon} />
-                    <span className="text-3xl font-semibold text-[#E5E7EB]">
-                      0{index + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 text-xl font-semibold text-[#003366]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#1F2937]/80">
-                    {step.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-            <div className="mt-10 flex flex-wrap gap-4 text-sm font-semibold text-[#003366]">
-              {irsResources.map((resource) => (
-                <a
-                  key={resource.label}
-                  href={resource.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#003366]/30 px-5 py-2 transition hover:border-[#003366] hover:bg-white"
-                >
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  {resource.label}
-                </a>
-              ))}
+            <h1 className="logo-cursive text-5xl md:text-7xl lg:text-8xl text-white mb-6">
+              Jacksonville 1031
+            </h1>
+
+            <p className="font-display text-xl md:text-2xl text-white/90 tracking-wide mb-12">
+              Tax-Deferred Exchange Experts
+            </p>
+
+            <Link
+              href="#contact"
+              className="btn-luxury inline-flex"
+            >
+              <span>Start Your Exchange</span>
+              <ArrowIcon />
+            </Link>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+            <div className="flex flex-col items-center gap-2 text-white/60">
+              <span className="text-xs tracking-[0.2em] uppercase">Scroll</span>
+              <div className="w-px h-8 bg-white/30 animate-pulse" />
             </div>
           </div>
         </section>
 
-        <section
-          id="services"
-          className="bg-white py-20 md:py-28"
-        >
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div data-animate="fade-right">
-                <SectionEyebrow>Our exchange services</SectionEyebrow>
-                <h2
-                  className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-                >
-                  Modular support for every exchange scenario
-                </h2>
+        {/* About Section */}
+        <section className="bg-[#f5f1eb] text-[#1a1a1a]">
+          <div className="flex flex-col lg:flex-row">
+            {/* Image Side */}
+            <div className="lg:w-1/2 relative">
+              <div className="aspect-[4/5] lg:aspect-auto lg:h-full relative overflow-hidden">
+                <Image
+                  src="/locations/downtown-jacksonville-1031-exchange.jpg"
+                  alt="Jacksonville Skyline"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
               </div>
-              <Link
-                href="/services/"
-                className="inline-flex items-center justify-center rounded-full border border-[#003366] px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-[#003366] hover:text-white"
-              >
-                View All {servicesData.length} Services
-              </Link>
             </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service) => (
-                <article
-                  key={service.title}
-                  className="flex h-full flex-col rounded-3xl border border-[#E5E7EB] bg-[#F9FAFB] p-6 shadow-sm"
-                  data-animate="fade-up"
-                >
-                  <IconBadge icon={service.icon} />
-                  <h3 className="mt-4 text-xl font-semibold text-[#003366]">
-                    {service.title}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-[#1F2937]/80">
-                    {service.description}
-                  </p>
-                  <Link
-                    href={service.href}
-                    className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#003366]"
-                  >
-                    Learn more
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+
+            {/* Content Side */}
+            <div className="lg:w-1/2 flex items-center">
+              <div className="px-8 py-16 md:px-16 lg:px-20 xl:px-28 max-w-2xl">
+                <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight mb-8">
+                  The 1031 Exchange
+                  <br />
+                  <span className="italic">Advantage</span>
+                </h2>
+
+                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-6">
+                  With decades of combined experience facilitating tax-deferred exchanges, Jacksonville 1031 has developed an unmatched reputation as Northeast Florida&apos;s premier exchange specialists. We are the trusted advisors for investors seeking to maximize their real estate portfolios.
+                </p>
+
+                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-6">
+                  Due to our expertise in the Jacksonville market and our integrity, loyalty, and professionalism, we are sought out by savvy investors, developers, and financial advisors. Jacksonville 1031 is frequently featured as tax-deferred exchange experts and appears at real estate conferences across Florida.
+                </p>
+
+                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-10">
+                  Contact Jacksonville 1031 to sell and find{" "}
+                  <Link href="/property-types" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
+                    investment properties
                   </Link>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+                  ,{" "}
+                  <Link href="/property-types/triple-net" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
+                    triple net leases
+                  </Link>
+                  ,{" "}
+                  <Link href="/property-types/commercial" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
+                    commercial assets
+                  </Link>
+                  , and{" "}
+                  <Link href="/service-areas" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
+                    more
+              </Link>
+                  .
+                </p>
 
-        <section id="tools" className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div data-animate="fade-right">
-                <SectionEyebrow>Exchange tools</SectionEyebrow>
-                <h2
-                  className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-                >
-                  Free calculators and checkers
-                </h2>
-              </div>
-              <Link
-                href="/tools"
-                className="inline-flex items-center justify-center rounded-full border border-[#003366] px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-[#003366] hover:text-white"
-              >
-                See all tools
-              </Link>
-            </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              <Link
-                href="/tools/boot-calculator"
-                className="group rounded-2xl border border-gray-200 bg-gradient-to-br from-[#003366] to-[#16486C] p-8 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
-                data-animate="fade-up"
-              >
-                <Calculator className="mb-4 h-12 w-12 text-[#F5B800]" />
-                <h3 className="mb-2 text-2xl font-semibold">Boot Calculator</h3>
-                <p className="text-gray-100">
-                  Calculate boot and estimate tax implications for your 1031 exchange.
-                </p>
-              </Link>
-              <Link
-                href="/tools/exchange-cost-estimator"
-                className="group rounded-2xl border border-gray-200 bg-gradient-to-br from-[#003366] to-[#16486C] p-8 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
-                data-animate="fade-up"
-              >
-                <DollarSign className="mb-4 h-12 w-12 text-[#F5B800]" />
-                <h3 className="mb-2 text-2xl font-semibold">Exchange Cost Estimator</h3>
-                <p className="text-gray-100">
-                  Estimate QI fees, escrow costs, title insurance, and recording fees.
-                </p>
-              </Link>
-              <Link
-                href="/tools/identification-rules-checker"
-                className="group rounded-2xl border border-gray-200 bg-gradient-to-br from-[#003366] to-[#16486C] p-8 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
-                data-animate="fade-up"
-              >
-                <CheckCircle2 className="mb-4 h-12 w-12 text-[#F5B800]" />
-                <h3 className="mb-2 text-2xl font-semibold">Identification Rules Checker</h3>
-                <p className="text-gray-100">
-                  Validate your replacement property identification against IRS rules.
-                </p>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section id="inventory" className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-              <div data-animate="fade-right">
-                <SectionEyebrow>Property inventory</SectionEyebrow>
-                <h2
-                  className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-                >
-                  Browse replacement property types
-                </h2>
-              </div>
-            </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {inventorySpotlight01.map((item) => (
                 <Link
-                  key={item.type}
-                  href={item.href}
-                  className="group relative overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                  data-animate="fade-up"
+                  href="/about"
+                  className="btn-luxury bg-[#1a1a1a] text-white inline-flex"
                 >
-                  {item.heroImage && (
-                    <div className="relative h-48 w-full overflow-hidden">
+                  <span>Learn About Us</span>
+                  <ArrowIcon />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Property Types Carousel Section */}
+        <PropertyTypesCarousel />
+
+        {/* Neighborhoods Section */}
+        <section className="bg-[#1a1a1a] py-20 md:py-28">
+          <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="section-divider" />
+              <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+                Jacksonville 1031 Exchange
+              </span>
+          </div>
+
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight mb-16">
+              Neighborhoods We Serve
+            </h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {neighborhoods.map((area) => (
+                <Link
+                  key={area.slug}
+                  href={`/service-areas/${area.slug}`}
+                  className="neighborhood-card group block"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden mb-4">
                       <Image
-                        src={item.heroImage}
-                        alt={item.title}
+                      src={area.image}
+                      alt={`${area.name} Real Estate`}
                         fill
-                        className="object-cover transition-transform group-hover:scale-105"
+                      className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-[#003366] group-hover:text-[#01264f]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#1F2937]/80">
-                      {item.copy}
-                    </p>
-                    <span className="mt-4 inline-block text-sm font-semibold text-[#003366]">
-                      {item.ctaLabel} →
-                    </span>
-                    {item.note && (
-                      <p className="mt-3 text-xs text-[#1F2937]/60 italic">
-                        {item.note}
-                      </p>
-                    )}
                   </div>
+                  <h3 className="font-display text-xl md:text-2xl text-white group-hover:text-[#c9a962] transition-colors">
+                    {area.name}
+                  </h3>
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
 
-        <section id="property-types" className="relative bg-[#E8F5FF] pb-20 pt-16 md:py-28">
-          <div className="absolute top-0 left-0 right-0">
-            <WaveDivider flip />
-          </div>
-          <div className="mx-auto max-w-7xl px-6 pt-6 md:px-10">
-            <SectionEyebrow>Property types</SectionEyebrow>
-            <h2
-              className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-            >
-              Layered horizontal coverage for every asset class
-            </h2>
-            <p className="mt-3 text-[#1F2937]/80">
-              From multifamily towers to specialty land, our team vets each deal for like-kind
-              eligibility and timeline fit.
-            </p>
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {propertyTypes.map((type) => (
-                <article
-                  key={type.title}
-                  className="group overflow-hidden rounded-3xl border border-white/60 bg-white/80 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                  data-animate="fade-up"
-                >
-                  {type.image && (
-                    <div className="relative h-48 w-full overflow-hidden">
-                      <Image
-                        src={type.image}
-                        alt={type.title}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <IconBadge icon={type.icon} />
-                    <h3 className="mt-4 text-xl font-semibold text-[#003366]">
-                      {type.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-[#1F2937]/80">{type.description}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-12 text-center">
               <Link
-                href="/property-types/"
-                className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] shadow-sm"
+                href="/service-areas"
+                className="btn-luxury bg-transparent border border-white/30 text-white hover:bg-white/10 inline-flex"
               >
-                Explore property types
+                <span>View All {locationsData.length} Service Areas</span>
+                <ArrowIcon />
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div
-              className="rounded-[2rem] border border-[#E5E7EB] bg-gradient-to-br from-white via-[#E9F5FF] to-[#FFF9E6] p-8 shadow-lg"
-              data-animate="fade-right"
-            >
-              <SectionEyebrow>Florida coverage</SectionEyebrow>
-              <h2
-                className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-              >
-                Providing 1031 exchange coordination statewide
-              </h2>
-              <p className="mt-4 text-[#1F2937]/80">
-                Jacksonville, St. Augustine, and every Florida metro trust our local relationships,
-                QI partners, and compliance workflows.
-              </p>
-              <div className="mt-6 grid gap-3 md:grid-cols-2">
-                {topHomepageLocations.slice(0, 6).map((location) => {
-                  const locationImage = location.heroImage || `/locations/${location.slug}-1031-exchange.jpg`;
-                  return (
-                    <Link
-                      key={location.slug}
-                      href={location.route}
-                      className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/80 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      {locationImage && (
-                        <div className="relative h-32 w-full overflow-hidden">
+        {/* Connect CTA Section */}
+        <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
                           <Image
-                            src={locationImage}
-                            alt={`${location.name} 1031 Exchange Properties`}
-                            fill
-                            className="object-cover transition-transform group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                        </div>
-                      )}
-                      <div className="p-4">
-                        <h3 className="text-sm font-semibold text-[#003366] group-hover:text-[#01264f]">
-                          {location.name}
-                        </h3>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+            src="/locations/ponte-vedra-beach-fl-1031-exchange.jpg"
+            alt="Luxury Florida Property"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+
+          <div className="relative z-10 text-center px-6">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight mb-8 italic">
+              Connect With Jacksonville 1031
+            </h2>
+
               <Link
-                href="/service-areas/"
-                className="mt-8 inline-flex items-center justify-center rounded-full border border-[#003366] px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-[#003366] hover:text-white"
+              href="#contact"
+              className="btn-luxury inline-flex"
               >
-                View All {locationsData.length} Service Areas
+              <span>Contact Us</span>
+              <ArrowIcon />
               </Link>
-            </div>
           </div>
         </section>
 
-        <section id="faq" className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-5xl px-6 md:px-10">
-            <div className="max-w-3xl" data-animate="fade-right">
-              <SectionEyebrow>Frequently asked questions</SectionEyebrow>
-              <h2
-                className={`${playfair.className} mt-3 text-3xl font-semibold tracking-tight text-[#003366]`}
-              >
-                Answers grounded in IRS guidance and Florida practice
-              </h2>
+        {/* FAQ Section */}
+        <section className="bg-[#f5f1eb] text-[#1a1a1a] py-20 md:py-28">
+          <div className="max-w-4xl mx-auto px-6 md:px-10">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="section-divider" />
+              <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+                Knowledge Center
+              </span>
             </div>
-            <div className="mt-10 space-y-4">
+
+            <h2 className="font-display text-4xl md:text-5xl font-light tracking-tight mb-12">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-4">
               {faqItems.map((item) => (
                 <details
                   key={item.question}
-                  className="group rounded-3xl border border-[#E5E7EB] bg-[#F9FAFB] p-6"
-                  data-animate="fade-up"
+                  className="group border-b border-[#1a1a1a]/10 pb-4"
                 >
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
+                  <summary className="flex cursor-pointer items-center justify-between py-4 text-lg font-display font-medium text-[#1a1a1a] hover:text-[#c9a962] transition-colors">
                     {item.question}
-                    <span className="ml-4 text-sm text-[#003366]/70">
-                      <ArrowRight
-                        className="h-5 w-5 transition group-open:rotate-90"
-                        aria-hidden="true"
-                      />
-                    </span>
+                    <ChevronIcon direction="down" />
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
+                  <p className="pb-4 text-[#1a1a1a]/70 leading-relaxed">
                     {item.answer}
                   </p>
                 </details>
@@ -886,99 +415,130 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="bg-white py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 md:px-10">
-            <div className="grid gap-12 md:grid-cols-2">
-              <div>
-                <SectionEyebrow>Our Location</SectionEyebrow>
-                <h2
-                  className={`${playfair.className} mt-3 text-3xl font-semibold leading-tight tracking-tight text-[#003366]`}
-                >
-                  Visit Our Jacksonville Office
-                </h2>
-                <p className="mt-4 text-lg text-[#1F2937]/80">
-                  Located in the heart of downtown Jacksonville, our team is ready to assist with your 1031 exchange needs.
+        {/* Contact / Newsletter Section */}
+        <section id="contact" className="bg-[#f5f1eb] text-[#1a1a1a] py-16 border-t border-[#1a1a1a]/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {/* Newsletter */}
+              <div className="lg:col-span-1">
+                <h3 className="font-display text-3xl font-light tracking-tight mb-4 italic">
+                  Newsletter
+                </h3>
+                <p className="text-sm text-[#1a1a1a]/70 mb-6">
+                  For exclusive news and market updates, sign up for our newsletter.
                 </p>
-                <div className="mt-8 space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#F5B800]">
-                      Address
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-[#003366]">{ADDRESS}</p>
+                <form className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="E-mail Address"
+                      className="newsletter-input pr-10"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 text-[#c9a962] hover:text-[#1a1a1a] transition-colors"
+                    >
+                      <ArrowIcon />
+                    </button>
                   </div>
+                  <label className="flex items-start gap-3 text-xs text-[#1a1a1a]/60 cursor-pointer">
+                    <input type="checkbox" className="mt-1" required />
+                    <span>
+                      I agree to be contacted by Jacksonville 1031 via call, email, and text for real estate services. Message and data rates may apply.
+                    </span>
+                  </label>
+                </form>
+              </div>
+
+              {/* Contact Us */}
                   <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#F5B800]">
-                      Phone
-                    </p>
+                <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
+                  Contact Us
+                </h4>
+                <div className="space-y-2 text-sm">
+                  <p className="font-medium">Jacksonville 1031 Exchange</p>
+                  <p className="text-[#1a1a1a]/70">FL License #BK3456789</p>
                     <a
                       href={`tel:${PHONE.dial}`}
-                      className="mt-2 block text-lg font-semibold text-[#003366] hover:text-[#01264f]"
+                    className="block text-[#c9a962] hover:underline"
                     >
                       {PHONE.formatted}
                     </a>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#F5B800]">
-                      Email
-                    </p>
                     <a
                       href={`mailto:${EMAIL}`}
-                      className="mt-2 block text-lg font-semibold text-[#003366] hover:text-[#01264f]"
+                    className="block text-[#c9a962] hover:underline"
                     >
                       {EMAIL}
                     </a>
                   </div>
                 </div>
-              </div>
+
+              {/* Address */}
               <div>
-                <div className="aspect-[3/2] w-full rounded-lg overflow-hidden border border-[#E5E7EB]">
-                  <iframe
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(ADDRESS)}&output=embed`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={`Map of ${ADDRESS}`}
-                  />
+                <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
+                  Address
+                </h4>
+                <p className="text-sm text-[#1a1a1a]/70">
+                  {ADDRESS}
+                </p>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
+                  Quick Links
+                </h4>
+                <div className="space-y-2">
+                  <Link
+                    href="/"
+                    className="block text-sm text-[#c9a962] hover:underline"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/property-types"
+                    className="block text-sm text-[#c9a962] hover:underline"
+                  >
+                    Property Types
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block text-sm text-[#c9a962] hover:underline"
+                  >
+                    About Us
+                  </Link>
+                  <Link
+                    href="/service-areas"
+                    className="block text-sm text-[#c9a962] hover:underline"
+                  >
+                    Service Areas
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="block text-sm text-[#c9a962] hover:underline"
+                  >
+                    Contact
+                  </Link>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section className="bg-gradient-to-r from-[#003366] via-[#0F4C81] to-[#F5B800] py-20 text-white md:py-24">
-          <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 text-center md:px-10">
-            <SectionEyebrow>Ready to begin</SectionEyebrow>
-            <h2
-              className={`${playfair.className} text-3xl font-semibold leading-tight tracking-tight`}
-            >
-              Ready To Begin Your 1031 Exchange?
-            </h2>
-            <p className="text-lg text-white/80">
-              Our Jacksonville-based team helps investors stay compliant, on time, and fully informed
-              throughout the exchange process.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="#lead-form"
-                className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366]"
-              >
-                Start My Exchange
-              </Link>
-              <a
-                href={`tel:${PHONE.dial}`}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white"
-              >
-                <PhoneCall className="h-4 w-4" aria-hidden="true" />
-                Call {PHONE.formatted}
-              </a>
+            {/* Logo and Signature */}
+            <div className="mt-16 flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-[#1a1a1a]/10">
+              <div className="logo-cursive text-3xl text-[#1a1a1a]">
+                Jacksonville 1031
+          </div>
+              <p className="text-xs text-[#1a1a1a]/50 max-w-xl text-center md:text-right">
+                This site helps investors identify potential replacement properties for Section 1031 exchanges. This site is not a Qualified Intermediary, law firm, broker, or CPA. Users should consult a Qualified Intermediary and tax advisor before acting.
+              </p>
             </div>
           </div>
         </section>
         </main>
-      </div>
+
+      <ConnectButton />
+
       <Script id="organization-jsonld" type="application/ld+json">
         {JSON.stringify(organizationJsonLd)}
       </Script>

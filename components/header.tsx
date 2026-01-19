@@ -2,75 +2,89 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-const PRIMARY_CITY = "Jacksonville";
-const PRIMARY_STATE_ABBR = "FL";
 const PHONE = {
   formatted: "(904) 664-9656",
   dial: "+19046649656",
 };
-const COMPANY_NAME = "1031 Exchange of Jacksonville";
 
-import { servicesData } from "@/data/services";
-import { locationsData } from "@/data/locations";
-
-// Get top services - prioritize property identification services
-const propertyIdentificationServices = servicesData.filter((s) => 
-  s.category === "Property Paths"
-).slice(0, 6);
-const otherTopServices = servicesData
-  .filter((s) => s.category !== "Property Paths")
-  .slice(0, 2);
-const topServices = [...propertyIdentificationServices, ...otherTopServices].slice(0, 8);
-const services = topServices.map((s) => ({
-  name: s.name,
-  href: s.route,
-}));
-
-// Get top locations - Jacksonville first, then most populous cities
-const topLocations = [
-  locationsData.find((l) => l.slug === "jacksonville-fl"),
-  ...locationsData
-    .filter((l) => l.slug !== "jacksonville-fl" && l.type === "city")
-    .slice(0, 5),
-  ...locationsData
-    .filter((l) => l.slug !== "jacksonville-fl" && l.type !== "city" && l.type !== "remote")
-    .slice(0, 2),
-].filter(Boolean).slice(0, 8) as typeof locationsData;
-const locations = topLocations.map((l) => ({
-  name: l.name,
-  href: l.route,
-}));
-
-const totalServicesCount = servicesData.length;
-const totalLocationsCount = locationsData.length;
-
-const tools = [
-  { name: "Boot Calculator", href: "/tools/boot-calculator" },
-  { name: "Exchange Cost Estimator", href: "/tools/exchange-cost-estimator" },
-  { name: "Identification Rules Checker", href: "/tools/identification-rules-checker" },
+const propertyTypes = [
+  { name: "Triple Net", href: "/property-types/triple-net" },
+  { name: "Land", href: "/property-types/land" },
+  { name: "Residential", href: "/property-types/residential" },
+  { name: "Commercial", href: "/property-types/commercial" },
+  { name: "Retail", href: "/property-types/retail" },
+  { name: "Industrial", href: "/property-types/industrial" },
+  { name: "Hospitality", href: "/property-types/hospitality" },
 ];
+
+function ChevronDown() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="ml-1"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
+function HamburgerIcon() {
+  return (
+    <div className="flex flex-col gap-[6px]">
+      <span className="w-6 h-[1px] bg-white" />
+      <span className="w-6 h-[1px] bg-white" />
+    </div>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6L6 18M6 6l12 12" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const pathname = usePathname();
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [locationsOpen, setLocationsOpen] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
-  const locationsRef = useRef<HTMLDivElement>(null);
-  const toolsRef = useRef<HTMLDivElement>(null);
-  const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const locationsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const toolsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [propertiesOpen, setPropertiesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const propertiesRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setServicesOpen(false);
-        setLocationsOpen(false);
-        setToolsOpen(false);
+        setPropertiesOpen(false);
+        setMobileMenuOpen(false);
       }
     };
 
@@ -78,239 +92,256 @@ export default function Header() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const handleServicesMouseEnter = () => {
-    if (servicesTimeoutRef.current) {
-      clearTimeout(servicesTimeoutRef.current);
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-    setServicesOpen(true);
+    setPropertiesOpen(true);
   };
 
-  const handleServicesMouseLeave = () => {
-    servicesTimeoutRef.current = setTimeout(() => {
-      setServicesOpen(false);
-    }, 500);
-  };
-
-  const handleLocationsMouseEnter = () => {
-    if (locationsTimeoutRef.current) {
-      clearTimeout(locationsTimeoutRef.current);
-    }
-    setLocationsOpen(true);
-  };
-
-  const handleLocationsMouseLeave = () => {
-    locationsTimeoutRef.current = setTimeout(() => {
-      setLocationsOpen(false);
-    }, 500);
-  };
-
-  const handleToolsMouseEnter = () => {
-    if (toolsTimeoutRef.current) {
-      clearTimeout(toolsTimeoutRef.current);
-    }
-    setToolsOpen(true);
-  };
-
-  const handleToolsMouseLeave = () => {
-    toolsTimeoutRef.current = setTimeout(() => {
-      setToolsOpen(false);
-    }, 200);
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setPropertiesOpen(false);
+    }, 300);
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E5E7EB]/80 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <Link
-          href="/"
-          className="flex items-center gap-4"
-          aria-label={`${COMPANY_NAME} home`}
-        >
-          <Image
-            src="/1031-exchange-of-jacksonville-logo.png"
-            alt={`${COMPANY_NAME} logo`}
-            width={200}
-            height={60}
-            className="h-auto w-auto max-h-16"
-            priority
-          />
-        </Link>
-        <nav
-          className="hidden items-center gap-6 text-sm font-medium text-[#1F2937] md:flex"
-          aria-label="Primary"
-        >
-          <div
-            ref={servicesRef}
-            className="relative"
-            onMouseEnter={handleServicesMouseEnter}
-            onMouseLeave={handleServicesMouseLeave}
-          >
-            <button
-              type="button"
-              aria-expanded={servicesOpen}
-              aria-haspopup="true"
-              className="hover:text-[#003366] focus-visible:text-[#003366] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003366] focus-visible:ring-offset-2"
-              onClick={() => setServicesOpen(!servicesOpen)}
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#1a1a1a]/95 backdrop-blur-md py-4"
+            : "bg-transparent py-6"
+        }`}
+      >
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10 flex items-center justify-between">
+          {/* Left Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <div
+              ref={propertiesRef}
+              className="relative"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              Services
-            </button>
-            {servicesOpen && (
-              <div 
-                className="absolute left-0 top-full mt-2 w-80 rounded-2xl border border-[#E5E7EB] bg-white shadow-xl"
-                onMouseEnter={handleServicesMouseEnter}
-                onMouseLeave={handleServicesMouseLeave}
+              <button
+                type="button"
+                aria-expanded={propertiesOpen}
+                aria-haspopup="true"
+                className="nav-link flex items-center"
               >
-                <div className="max-h-96 overflow-y-auto p-4">
-                  <ul className="space-y-1">
-                    {services.map((service) => (
-                      <li key={service.href}>
-                        <Link
-                          href={service.href}
-                          className="block rounded-lg px-4 py-2 text-sm text-[#1F2937] transition hover:bg-[#F9FAFB] hover:text-[#003366] focus-visible:bg-[#F9FAFB] focus-visible:text-[#003366] focus-visible:outline-none"
-                          onClick={() => setServicesOpen(false)}
-                        >
-                          {service.name}
-                        </Link>
-                      </li>
+                Properties
+                <ChevronDown />
+              </button>
+              {propertiesOpen && (
+                <div
+                  className="absolute left-0 top-full mt-4 w-56 bg-[#1a1a1a] border border-white/10 shadow-2xl"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="py-2">
+                    {propertyTypes.map((type) => (
+                      <Link
+                        key={type.href}
+                        href={type.href}
+                        className="block px-5 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                        onClick={() => setPropertiesOpen(false)}
+                      >
+                        {type.name}
+                      </Link>
                     ))}
-                  </ul>
-                  <div className="mt-4 border-t border-[#E5E7EB] pt-4">
-                    <Link
-                      href="/services/"
-                      className="block rounded-lg px-4 py-2 text-sm font-semibold text-[#003366] transition hover:bg-[#F9FAFB] focus-visible:bg-[#F9FAFB] focus-visible:outline-none"
-                      onClick={() => setServicesOpen(false)}
-                    >
-                      View All {totalServicesCount} Services
-                    </Link>
+                    <div className="border-t border-white/10 mt-2 pt-2">
+                      <Link
+                        href="/property-types"
+                        className="block px-5 py-3 text-sm text-[#c9a962] hover:text-white transition-colors"
+                        onClick={() => setPropertiesOpen(false)}
+                      >
+                        View All Types
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div
-            ref={locationsRef}
-            className="relative"
-            onMouseEnter={handleLocationsMouseEnter}
-            onMouseLeave={handleLocationsMouseLeave}
-          >
-            <button
-              type="button"
-              aria-expanded={locationsOpen}
-              aria-haspopup="true"
-              className="hover:text-[#003366] focus-visible:text-[#003366] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003366] focus-visible:ring-offset-2"
-              onClick={() => setLocationsOpen(!locationsOpen)}
-            >
+              )}
+            </div>
+
+            <Link href="/service-areas" className="nav-link">
               Service Areas
-            </button>
-            {locationsOpen && (
-              <div 
-                className="absolute left-0 top-full mt-2 w-64 rounded-2xl border border-[#E5E7EB] bg-white shadow-xl"
-                onMouseEnter={handleLocationsMouseEnter}
-                onMouseLeave={handleLocationsMouseLeave}
-              >
-                <div className="p-4">
-                  <ul className="space-y-1">
-                    {locations.map((location) => (
-                      <li key={location.href}>
-                        <Link
-                          href={location.href}
-                          className="block rounded-lg px-4 py-2 text-sm text-[#1F2937] transition hover:bg-[#F9FAFB] hover:text-[#003366] focus-visible:bg-[#F9FAFB] focus-visible:text-[#003366] focus-visible:outline-none"
-                          onClick={() => setLocationsOpen(false)}
-                        >
-                          {location.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 border-t border-[#E5E7EB] pt-4">
-                    <Link
-                      href="/service-areas/"
-                      className="block rounded-lg px-4 py-2 text-sm font-semibold text-[#003366] transition hover:bg-[#F9FAFB] focus-visible:bg-[#F9FAFB] focus-visible:outline-none"
-                      onClick={() => setLocationsOpen(false)}
-                    >
-                      View All Locations
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          <div
-            ref={toolsRef}
-            className="relative"
-            onMouseEnter={handleToolsMouseEnter}
-            onMouseLeave={handleToolsMouseLeave}
+            </Link>
+          </nav>
+
+          {/* Center Logo */}
+          <Link
+            href="/"
+            className="logo-cursive text-2xl md:text-3xl lg:text-4xl"
+            aria-label="Jacksonville 1031 - Home"
           >
+            Jacksonville 1031
+          </Link>
+
+          {/* Right Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="/contact" className="nav-link">
+              Contact
+            </Link>
+
+            <a href={`tel:${PHONE.dial}`} className="nav-link">
+              {PHONE.formatted}
+            </a>
+
             <button
-              type="button"
-              aria-expanded={toolsOpen}
-              aria-haspopup="true"
-              className="hover:text-[#003366] focus-visible:text-[#003366] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003366] focus-visible:ring-offset-2"
-              onClick={() => setToolsOpen(!toolsOpen)}
+              onClick={() => setMobileMenuOpen(true)}
+              className="nav-link flex items-center gap-2"
+              aria-label="Open menu"
             >
-              Tools
+              Menu
+              <HamburgerIcon />
             </button>
-            {toolsOpen && (
-              <div className="absolute left-0 top-full mt-2 w-80 rounded-2xl border border-[#E5E7EB] bg-white shadow-xl">
-                <div className="p-4">
-                  <ul className="space-y-1">
-                    {tools.map((tool) => (
-                      <li key={tool.href}>
-                        <Link
-                          href={tool.href}
-                          className="block rounded-lg px-4 py-2 text-sm text-[#1F2937] transition hover:bg-[#F9FAFB] hover:text-[#003366] focus-visible:bg-[#F9FAFB] focus-visible:text-[#003366] focus-visible:outline-none"
-                          onClick={() => setToolsOpen(false)}
-                        >
-                          {tool.name}
-                        </Link>
-                      </li>
+          </nav>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="md:hidden text-white"
+            aria-label="Open menu"
+          >
+            <HamburgerIcon />
+          </button>
+        </div>
+      </header>
+
+      {/* Full Screen Mobile/Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-[#1a1a1a] overflow-y-auto">
+          <div className="min-h-screen">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 md:px-10 py-6">
+              <Link
+                href="/"
+                className="logo-cursive text-2xl md:text-3xl"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Jacksonville 1031
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-white hover:text-[#c9a962] transition-colors"
+                aria-label="Close menu"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            {/* Menu Content */}
+            <div className="px-6 md:px-10 py-12">
+              <nav className="space-y-8">
+                {/* Main Links */}
+                <div className="space-y-6">
+                  <Link
+                    href="/"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/property-types"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Property Types
+                  </Link>
+                  <Link
+                    href="/service-areas"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Service Areas
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    href="/tools"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Tools
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Contact
+                  </Link>
+                </div>
+
+                {/* Property Types Sub-nav */}
+                <div className="pt-8 border-t border-white/10">
+                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
+                    Property Types
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    {propertyTypes.map((type) => (
+                      <Link
+                        key={type.href}
+                        href={type.href}
+                        className="text-white/70 hover:text-white transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {type.name}
+                      </Link>
                     ))}
-                  </ul>
-                  <div className="mt-4 border-t border-[#E5E7EB] pt-4">
-                    <Link
-                      href="/tools"
-                      className="block rounded-lg px-4 py-2 text-sm font-semibold text-[#003366] transition hover:bg-[#F9FAFB] focus-visible:bg-[#F9FAFB] focus-visible:outline-none"
-                      onClick={() => setToolsOpen(false)}
-                    >
-                      View All Tools
-                    </Link>
                   </div>
                 </div>
-              </div>
-            )}
+
+                {/* Contact Info */}
+                <div className="pt-8 border-t border-white/10">
+                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
+                    Contact
+                  </p>
+                  <div className="space-y-4">
+                    <a
+                      href={`tel:${PHONE.dial}`}
+                      className="block text-xl text-white hover:text-[#c9a962] transition-colors"
+                    >
+                      {PHONE.formatted}
+                    </a>
+                    <a
+                      href="mailto:exchange@1031exchangeofjacksonville.com"
+                      className="block text-white/70 hover:text-white transition-colors"
+                    >
+                      exchange@1031exchangeofjacksonville.com
+                    </a>
+                  </div>
+                </div>
+              </nav>
+            </div>
           </div>
-          <Link
-            href="/property-types/"
-            className="hover:text-[#003366] focus-visible:text-[#003366]"
-          >
-            Property Types
-          </Link>
-          <Link
-            href="/blog/"
-            className="hover:text-[#003366] focus-visible:text-[#003366]"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/about/"
-            className="hover:text-[#003366] focus-visible:text-[#003366]"
-          >
-            About
-          </Link>
-          <Link
-            href="/contact/"
-            className="inline-flex items-center justify-center rounded-full bg-[#003366] px-5 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[#01264f]"
-          >
-            Contact
-          </Link>
-        </nav>
-        <a
-          href={`tel:${PHONE.dial}`}
-          className="inline-flex items-center gap-2 rounded-full border border-[#003366] px-5 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#003366] transition hover:bg-[#003366] hover:text-white md:hidden"
-        >
-          Call {PHONE.formatted}
-        </a>
-      </div>
-    </header>
+        </div>
+      )}
+    </>
   );
 }
-

@@ -4,8 +4,6 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import StickyCTA from "@/components/sticky-cta";
-import MotionController from "@/components/motion-controller";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,9 +18,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Jacksonville 1031 Exchange Experts | Florida Qualified Intermediary Network",
+  title: "Jacksonville 1031 Exchange | Florida Tax-Deferred Property Specialists",
   description:
-    "1031 exchange guidance for investors across Jacksonville and North Florida. Local intermediary partnerships, CPA and attorney coordination, and IRS-compliant timelines.",
+    "Premier 1031 exchange services in Jacksonville, FL. Defer capital gains taxes on investment property with our expert guidance. Serving North Florida investors.",
   metadataBase: new URL("https://www.1031exchangeofjacksonville.com"),
   icons: {
     icon: [
@@ -47,13 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className={`${inter.className} bg-[#F9FAFB] text-[#1F2937]`}>
-        <MotionController />
+    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
+      <body className={`${inter.className} bg-[#1a1a1a] text-[#f5f1eb]`}>
         <Header />
-        <main>{children}</main>
+        {children}
         <Footer />
-        <StickyCTA />
         <Analytics />
       </body>
     </html>
