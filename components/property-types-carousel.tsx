@@ -122,8 +122,8 @@ export default function PropertyTypesCarousel() {
   const nextType = propertyTypes[getNextIndex()];
 
   return (
-    <section className="bg-[#1a1a1a] py-20 md:py-28 overflow-hidden">
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+    <section className="bg-[#1a1a1a] h-screen min-h-[600px] max-h-[900px] overflow-hidden flex items-center">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-10 w-full">
         {/* Section Header */}
         <div className="flex items-center gap-4 mb-4">
           <div className="section-divider" />
@@ -132,7 +132,7 @@ export default function PropertyTypesCarousel() {
           </span>
         </div>
 
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight mb-16">
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-white tracking-tight mb-12">
           Property Types
         </h2>
 
@@ -141,19 +141,19 @@ export default function PropertyTypesCarousel() {
           {/* Main Carousel Content */}
           <div className="flex items-end justify-center gap-4 md:gap-8 lg:gap-12">
             {/* Previous Slide */}
-            <div className="hidden md:block w-[180px] lg:w-[220px] xl:w-[260px] flex-shrink-0">
+            <div className="hidden md:block w-[140px] lg:w-[180px] xl:w-[220px] flex-shrink-0">
               <div className="relative aspect-[4/5] overflow-hidden opacity-60">
                 <Image
                   src={prevType.image}
                   alt={prevType.name}
                   fill
                   className="object-cover"
-                  sizes="260px"
+                  sizes="220px"
                 />
               </div>
               {/* Previous Title & Description - Always Visible */}
-              <div className="mt-4">
-                <h3 className="font-display text-xl lg:text-2xl text-white/50 italic">
+              <div className="mt-3">
+                <h3 className="font-display text-lg lg:text-xl text-white/50 italic">
                   {prevType.name}
                 </h3>
                 <p className="text-xs text-white/30 mt-1 line-clamp-2">
@@ -172,20 +172,20 @@ export default function PropertyTypesCarousel() {
             </button>
 
             {/* Current Slide (Center) */}
-            <div className="w-full max-w-[320px] md:max-w-[340px] lg:max-w-[380px] flex-shrink-0">
+            <div className="w-full max-w-[280px] md:max-w-[300px] lg:max-w-[340px] flex-shrink-0">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
                   src={currentType.image}
                   alt={currentType.name}
                   fill
                   className="object-cover transition-transform duration-500"
-                  sizes="(max-width: 768px) 320px, 380px"
+                  sizes="(max-width: 768px) 280px, 340px"
                   priority
                 />
               </div>
 
               {/* Title and Description with flip animation - grouped together */}
-              <div className="mt-6 h-[100px] md:h-[90px] overflow-hidden perspective-[1000px]">
+              <div className="mt-4 h-[80px] md:h-[75px] overflow-hidden perspective-[1000px]">
                 <div
                   className={`transition-all duration-400 transform-gpu ${
                     isAnimating
@@ -204,7 +204,7 @@ export default function PropertyTypesCarousel() {
                     transition: "transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease",
                   }}
                 >
-                  <h3 className="font-display text-3xl md:text-4xl text-white italic text-center">
+                  <h3 className="font-display text-2xl md:text-3xl text-white italic text-center">
                     {currentType.name}
                   </h3>
                   <p className="text-sm text-white/60 text-center mt-2 line-clamp-2 px-4">
@@ -214,7 +214,7 @@ export default function PropertyTypesCarousel() {
               </div>
 
               {/* View Link */}
-              <div className="text-center mt-4">
+              <div className="text-center mt-3">
                 <Link
                   href={`/property-types/${currentType.slug}`}
                   className="inline-flex items-center gap-2 text-sm text-[#c9a962] hover:text-white transition-colors tracking-[0.15em] uppercase"
@@ -246,19 +246,19 @@ export default function PropertyTypesCarousel() {
             </button>
 
             {/* Next Slide */}
-            <div className="hidden md:block w-[180px] lg:w-[220px] xl:w-[260px] flex-shrink-0">
+            <div className="hidden md:block w-[140px] lg:w-[180px] xl:w-[220px] flex-shrink-0">
               <div className="relative aspect-[4/5] overflow-hidden opacity-60">
                 <Image
                   src={nextType.image}
                   alt={nextType.name}
                   fill
                   className="object-cover"
-                  sizes="260px"
+                  sizes="220px"
                 />
               </div>
               {/* Next Title & Description - Always Visible */}
-              <div className="mt-4">
-                <h3 className="font-display text-xl lg:text-2xl text-white/50 italic">
+              <div className="mt-3">
+                <h3 className="font-display text-lg lg:text-xl text-white/50 italic">
                   {nextType.name}
                 </h3>
                 <p className="text-xs text-white/30 mt-1 line-clamp-2">
@@ -269,7 +269,7 @@ export default function PropertyTypesCarousel() {
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex justify-center gap-2 mt-12">
+          <div className="flex justify-center gap-2 mt-8">
             {propertyTypes.map((_, index) => (
               <button
                 key={index}
