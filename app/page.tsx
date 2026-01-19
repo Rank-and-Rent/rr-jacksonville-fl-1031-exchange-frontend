@@ -297,47 +297,21 @@ export default function HomePage() {
 
             {/* Content Side */}
             <div className="lg:w-1/2 flex items-center">
-              <div className="px-8 py-16 md:px-16 lg:px-20 xl:px-28 max-w-2xl">
-                <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight mb-8">
-                  The 1031 Exchange
-                  <br />
-                  <span className="italic">Advantage</span>
+              <div className="px-8 py-16 md:px-16 lg:px-20 xl:px-32 max-w-3xl">
+                <h2 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.1] tracking-tight mb-10">
+                  The 1031 Exchange <span className="italic">Advantage</span>
                 </h2>
 
-                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-6">
-                  With decades of combined experience facilitating tax-deferred exchanges, Jacksonville 1031 has developed an unmatched reputation as Northeast Florida&apos;s premier exchange specialists. We are the trusted advisors for investors seeking to maximize their real estate portfolios.
-                </p>
-
-                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-6">
-                  Due to our expertise in the Jacksonville market and our integrity, loyalty, and professionalism, we are sought out by savvy investors, developers, and financial advisors. Jacksonville 1031 is frequently featured as tax-deferred exchange experts and appears at real estate conferences across Florida.
-                </p>
-
-                <p className="text-base md:text-lg leading-relaxed text-[#1a1a1a]/80 mb-10">
-                  Contact Jacksonville 1031 to sell and find{" "}
-                  <Link href="/property-types" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
-                    investment properties
-                  </Link>
-                  ,{" "}
-                  <Link href="/property-types/triple-net" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
-                    triple net leases
-                  </Link>
-                  ,{" "}
-                  <Link href="/property-types/commercial" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
-                    commercial assets
-                  </Link>
-                  , and{" "}
-                  <Link href="/service-areas" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
-                    more
-                  </Link>
-                  .
+                <p className="text-base md:text-lg lg:text-xl leading-relaxed text-[#1a1a1a] mb-12">
+                  With decades of combined experience facilitating tax-deferred exchanges, Jacksonville 1031 has developed an unmatched reputation as Northeast Florida&apos;s premier exchange specialists. We are the trusted advisors for investors seeking to maximize their real estate portfolios. Due to our expertise in the Jacksonville market and our integrity, loyalty, and professionalism, we are sought out by savvy investors, developers, and financial advisors. Jacksonville 1031 is frequently featured as a tax-deferred exchange expert and appears as a keynote speaker at real estate conferences around the globe. Contact Jacksonville 1031 to sell and find houses, gated estates, condos, mansions and luxury homes for sale in Jacksonville, St. Augustine, Ponte Vedra, Amelia Island and more.
                 </p>
 
                 <Link
                   href="/about"
-                  className="btn-luxury bg-[#1a1a1a] text-white inline-flex"
+                  className="inline-flex items-center justify-center bg-[#1a1a1a] text-white px-10 py-5 text-sm font-semibold tracking-[0.2em] uppercase hover:bg-[#2a2a2a] transition-all"
                 >
                   <span>Learn About Us</span>
-                  <ArrowIcon />
+                  <ArrowIcon className="ml-3" />
                 </Link>
               </div>
             </div>
