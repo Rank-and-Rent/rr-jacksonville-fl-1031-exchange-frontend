@@ -282,15 +282,22 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Full Screen Mobile/Menu Overlay */}
+      {/* Half-Screen Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] bg-[#1a1a1a] overflow-y-auto">
-          <div className="min-h-screen">
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-[100] bg-black/50"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Menu Drawer - Opens from right, 50% width */}
+          <div className="fixed right-0 top-0 bottom-0 w-[50vw] min-w-[300px] max-w-[500px] z-[101] bg-[#1a1a1a] overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 md:px-10 py-6">
+            <div className="flex items-center justify-between px-8 py-8 border-b border-white/10">
               <Link
                 href="/"
-                className="logo-cursive text-2xl md:text-3xl"
+                className="logo-cursive text-xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Jacksonville 1031
@@ -304,131 +311,69 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Menu Content */}
-            <div className="px-6 md:px-10 py-12">
-              <nav className="space-y-8">
-                {/* Main Links */}
-                <div className="space-y-6">
-                  <Link
-                    href="/"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/property-types"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Property Types
-                  </Link>
-                  <Link
-                    href="/service-areas"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Service Areas
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    href="/tools"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Tools
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Blog
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="block font-display text-4xl md:text-5xl text-white hover:text-[#c9a962] transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Contact
-                  </Link>
-                </div>
-
-                {/* Property Types Sub-nav */}
-                <div className="pt-8 border-t border-white/10">
-                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
-                    Property Types
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    {propertyTypes.map((type) => (
-                      <Link
-                        key={type.href}
-                        href={type.href}
-                        className="text-white/70 hover:text-white transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {type.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Services Sub-nav */}
-                <div className="pt-8 border-t border-white/10">
-                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
-                    Our Services
-                  </p>
-                  <div className="grid grid-cols-1 gap-3">
-                    {topServices.map((service) => (
-                      <Link
-                        key={service.route}
-                        href={service.route}
-                        className="text-sm text-white/70 hover:text-white transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {service.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Contact Info */}
-                <div className="pt-8 border-t border-white/10">
-                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
-                    Contact
-                  </p>
-                  <div className="space-y-4">
-                    <a
-                      href={`tel:${PHONE.dial}`}
-                      className="block text-xl text-white hover:text-[#c9a962] transition-colors"
-                    >
-                      {PHONE.formatted}
-                    </a>
-                    <a
-                      href="mailto:exchange@1031exchangeofjacksonville.com"
-                      className="block text-white/70 hover:text-white transition-colors"
-                    >
-                      exchange@1031exchangeofjacksonville.com
-                    </a>
-                  </div>
-                </div>
+            {/* Menu Content - Only Main Navigation */}
+            <div className="px-8 py-12">
+              <nav className="space-y-6">
+                <Link
+                  href="/"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/about"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  About
+                </Link>
+                <Link
+                  href="/property-types"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Property Types
+                </Link>
+                <Link
+                  href="/service-areas"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Service Areas
+                </Link>
+                <Link
+                  href="/services"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/tools"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Tools
+                </Link>
+                <Link
+                  href="/blog"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+                <Link
+                  href="/contact"
+                  className="block font-display text-3xl text-white hover:text-[#c9a962] transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
               </nav>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
