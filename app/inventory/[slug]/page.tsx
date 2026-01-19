@@ -25,11 +25,8 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  return inventoryCategories.map((category) => ({
-    slug: category.slug,
-  }));
-}
+// Dynamic route - pages generated at request time for better build performance
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;

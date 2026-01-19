@@ -18,11 +18,8 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  return servicesData.map((service) => ({
-    slug: service.slug,
-  }));
-}
+// Dynamic route - pages generated at request time for better build performance
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
