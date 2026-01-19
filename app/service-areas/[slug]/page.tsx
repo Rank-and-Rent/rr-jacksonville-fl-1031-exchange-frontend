@@ -2,23 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
-import Breadcrumbs from "@/components/breadcrumbs";
-import { Inter, Playfair_Display } from "next/font/google";
 import { locationsData } from "@/data/locations";
 import { servicesData } from "@/data/services";
 import { getLocationBatchData } from "@/lib/batch-data";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
 
 const PRIMARY_CITY = "Jacksonville";
 const PRIMARY_STATE_ABBR = "FL";
@@ -57,6 +43,24 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 export default async function LocationPage({ params }: Props) {
   const { slug } = await params;
   const location = locationsData.find((l) => l.slug === slug);
@@ -71,16 +75,10 @@ export default async function LocationPage({ params }: Props) {
   // Get hero image - prefer from location data, fallback to standard pattern
   const heroImage = location.heroImage || `/locations/${slug}-1031-exchange.jpg`;
 
-  const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: "Service Areas", href: "/service-areas/" },
-    { label: location.name },
-  ];
-
   return (
-    <div className={`${inter.className} ${playfair.variable} bg-[#F9FAFB] text-[#1F2937]`}>
+    <div className="luxury-page">
       {/* Hero Section with Image */}
-      <div className="relative w-full h-[400px] md:h-[500px]">
+      <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
         <Image
           src={heroImage}
           alt={`${location.name} 1031 Exchange Properties`}
@@ -88,207 +86,192 @@ export default async function LocationPage({ params }: Props) {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#003366]/90 via-[#003366]/50 to-transparent" />
-        <div className="absolute inset-0 flex items-end">
-          <div className="mx-auto max-w-7xl w-full px-6 pb-12 md:px-10">
-            <Breadcrumbs items={breadcrumbItems} className="text-white/90" />
-            <h1
-              className={`${playfair.variable} mt-4 text-4xl font-semibold leading-[1.15] tracking-tight text-white md:text-5xl`}
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              {location.name} 1031 Exchange Properties
-            </h1>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center px-6">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              Service Areas
+            </span>
+            <div className="section-divider" />
           </div>
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight">
+            {location.name}
+          </h1>
         </div>
-      </div>
-      <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
-        {batchData?.mainDescription && (
-          <div 
-            className="text-[#1F2937]/80 leading-relaxed prose prose-lg max-w-none mb-8"
-            dangerouslySetInnerHTML={{ __html: batchData.mainDescription }}
-          />
-        )}
-        {!batchData?.mainDescription && (
-          <p className="mb-8 text-lg leading-relaxed text-[#1F2937]/80">
-            We help investors identify 1031 exchange replacement properties in {location.name}, {PRIMARY_STATE_ABBR}. Our nationwide property identification support helps you find qualified replacement properties within your 45 day identification deadline.
-          </p>
-        )}
-        {batchData?.popularPaths && batchData.popularPaths.length > 0 && (
-          <div className="mt-12">
-            <h2
-              className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              Popular Property Identification Paths in {location.name}
-            </h2>
-            <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {batchData.popularPaths.map((path, index) => {
-                const service = path.type === "service" 
-                  ? servicesData.find(s => s.slug === path.slug)
-                  : null;
-                const href = service?.route || `/property-types/${path.slug}`;
-                return (
-                  <Link
-                    key={index}
-                    href={href}
-                    className="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                  >
-                    <div className="text-sm font-semibold text-[#F5B800] mb-2">#{path.rank}</div>
-                    <h3 className="text-xl font-semibold text-[#003366]">
-                      {path.name}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#1F2937]/80">
-                      {path.whyPopular}
-                    </p>
-                  </Link>
-                );
-              })}
+      </section>
+
+      {/* Main Content */}
+      <section className="bg-[#f5f1eb] text-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6 md:px-10">
+          {batchData?.mainDescription && (
+            <div 
+              className="prose prose-lg max-w-none text-[#1a1a1a]/70 mb-8"
+              dangerouslySetInnerHTML={{ __html: batchData.mainDescription }}
+            />
+          )}
+          {!batchData?.mainDescription && (
+            <p className="text-lg leading-relaxed text-[#1a1a1a]/80 mb-8">
+              We help investors identify 1031 exchange replacement properties in {location.name}, {PRIMARY_STATE_ABBR}. Our nationwide property identification support helps you find qualified replacement properties within your 45 day identification deadline.
+            </p>
+          )}
+
+          {batchData?.popularPaths && batchData.popularPaths.length > 0 && (
+            <div className="mt-12">
+              <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight text-[#1a1a1a] mb-6">
+                Popular Property Identification Paths in {location.name}
+              </h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {batchData.popularPaths.map((path, index) => {
+                  const service = path.type === "service" 
+                    ? servicesData.find(s => s.slug === path.slug)
+                    : null;
+                  const href = service?.route || `/property-types/${path.slug}`;
+                  return (
+                    <Link
+                      key={index}
+                      href={href}
+                      className="bg-white/50 p-6 hover:bg-white transition-all"
+                    >
+                      <div className="text-sm font-semibold text-[#c9a962] mb-2">#{path.rank}</div>
+                      <h3 className="font-display text-xl text-[#1a1a1a]">
+                        {path.name}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-[#1a1a1a]/70">
+                        {path.whyPopular}
+                      </p>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
-        {batchData?.faqs && batchData.faqs.length > 0 && (
-          <div className="mt-12">
-            <h2
-              className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              Frequently Asked Questions
-            </h2>
-            <div className="mt-6 space-y-4">
-              {batchData.faqs.map((faq, index) => (
-                <details key={index} className="group rounded-3xl border border-[#E5E7EB] bg-white p-6">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
-                    {faq.question}
-                    <span className="ml-4 text-sm text-[#003366]/70">+</span>
+          )}
+
+          {batchData?.faqs && batchData.faqs.length > 0 && (
+            <div className="mt-12">
+              <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight text-[#1a1a1a] mb-6">
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-4">
+                {batchData.faqs.map((faq, index) => (
+                  <details key={index} className="group bg-white/50 p-6">
+                    <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-display font-medium text-[#1a1a1a] hover:text-[#c9a962] transition-colors">
+                      {faq.question}
+                      <span className="ml-4">+</span>
+                    </summary>
+                    <p className="mt-4 text-sm leading-relaxed text-[#1a1a1a]/70">
+                      {faq.answer}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!batchData?.faqs && (
+            <div className="mt-12">
+              <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight text-[#1a1a1a] mb-6">
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-4">
+                <details className="group bg-white/50 p-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-display font-medium text-[#1a1a1a] hover:text-[#c9a962] transition-colors">
+                    What types of properties are available for 1031 exchanges in {location.name}?
+                    <span className="ml-4">+</span>
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
-                    {faq.answer}
+                  <p className="mt-4 text-sm leading-relaxed text-[#1a1a1a]/70">
+                    Investors in {location.name}, {PRIMARY_STATE_ABBR} can find multifamily properties, industrial warehouses, triple net lease commercial properties, medical office buildings, and self storage facilities. We provide nationwide property identification support to help you find qualified replacement properties.
                   </p>
                 </details>
-              ))}
+                <details className="group bg-white/50 p-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-display font-medium text-[#1a1a1a] hover:text-[#c9a962] transition-colors">
+                    How do I identify properties in {location.name} within the 45 day deadline?
+                    <span className="ml-4">+</span>
+                  </summary>
+                  <p className="mt-4 text-sm leading-relaxed text-[#1a1a1a]/70">
+                    You have 45 calendar days from your relinquished property sale to identify replacement properties in {location.name}, {PRIMARY_STATE_ABBR}. You can identify up to three properties or use the 200 percent rule with written notices to your Qualified Intermediary.
+                  </p>
+                </details>
+              </div>
             </div>
+          )}
+        </div>
+      </section>
+
+      {/* Services in Location */}
+      <section className="bg-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              Available Services
+            </span>
           </div>
-        )}
-        {!batchData?.faqs && (
-          <div className="mt-12">
-            <h2
-              className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-              style={{ fontFamily: 'var(--font-playfair), serif' }}
-            >
-              Frequently Asked Questions
-            </h2>
-            <div className="mt-6 space-y-4">
-              <details className="group rounded-3xl border border-[#E5E7EB] bg-white p-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
-                  What types of properties are available for 1031 exchanges in {location.name}?
-                  <span className="ml-4 text-sm text-[#003366]/70">+</span>
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
-                  Investors in {location.name}, {PRIMARY_STATE_ABBR} can find multifamily properties, industrial warehouses, triple net lease commercial properties, medical office buildings, and self storage facilities. Triple net lease (NNN) investments offer stable, passive income streams with creditworthy corporate tenants who cover property expenses including taxes, insurance, and maintenance. These properties typically feature long-term leases (10-20+ years) with investment-grade tenants like dollar stores, quick-service restaurants, pharmacies, and convenience stores. We provide nationwide property identification support to help you find qualified replacement properties.
-                </p>
-              </details>
-              <details className="group rounded-3xl border border-[#E5E7EB] bg-white p-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
-                  How do I identify properties in {location.name} within the 45 day deadline?
-                  <span className="ml-4 text-sm text-[#003366]/70">+</span>
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
-                  You have 45 calendar days from your relinquished property sale to identify replacement properties in {location.name}, {PRIMARY_STATE_ABBR}. You can identify up to three properties or use the 200 percent rule with written notices to your Qualified Intermediary.
-                </p>
-              </details>
-              <details className="group rounded-3xl border border-[#E5E7EB] bg-white p-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
-                  What makes {location.name} attractive for 1031 exchanges?
-                  <span className="ml-4 text-sm text-[#003366]/70">+</span>
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
-                  {location.name}, {PRIMARY_STATE_ABBR} offers diverse property types and investment opportunities. We help investors identify replacement properties nationwide while maintaining local market knowledge.
-                </p>
-              </details>
-              <details className="group rounded-3xl border border-[#E5E7EB] bg-white p-6">
-                <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#003366]">
-                  How do I coordinate exchanges in {location.name}?
-                  <span className="ml-4 text-sm text-[#003366]/70">+</span>
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-[#1F2937]/80">
-                  We help coordinate 1031 exchanges in {location.name}, {PRIMARY_STATE_ABBR} by providing property identification services, coordinating with Qualified Intermediaries, and managing timelines to ensure compliance with IRS deadlines.
-                </p>
-              </details>
-            </div>
-          </div>
-        )}
-        <div className="mt-12">
-          <h2
-            className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-            style={{ fontFamily: 'var(--font-playfair), serif' }}
-          >
-            Services Available in {location.name}
+
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-white tracking-tight mb-16">
+            Services in {location.name}
           </h2>
-          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {locationServices.map((service) => (
               <Link
                 key={service.slug}
                 href={service.route}
-                className="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                className="group block bg-[#2a2a2a] p-8 hover:bg-[#333] transition-all"
               >
-                <h3 className="text-xl font-semibold text-[#003366]">
+                <h3 className="font-display text-xl md:text-2xl text-white group-hover:text-[#c9a962] transition-colors">
                   {service.name}
                 </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#1F2937]/80">
-                    {service.short}
-                  </p>
               </Link>
             ))}
           </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/service-areas"
+              className="inline-flex items-center justify-center bg-transparent border border-white/30 text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
+            >
+              <span>View All Service Areas</span>
+              <ArrowIcon className="ml-3" />
+            </Link>
+          </div>
         </div>
-        <div className="mt-12 flex flex-wrap gap-4">
-          <Link
-            href="/service-areas/"
-            className="inline-block rounded-full border border-[#003366] px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-[#003366] hover:text-white"
-          >
-            View All {locationsData.length} Service Areas
-          </Link>
-        </div>
-        <div className="mt-12 rounded-3xl bg-gradient-to-r from-[#003366] via-[#0F4C81] to-[#F5B800] p-8 text-white">
-          <h2
-            className={`${playfair.variable} text-2xl font-semibold tracking-tight`}
-            style={{ fontFamily: 'var(--font-playfair), serif' }}
-          >
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/locations/ponte-vedra-beach-fl-1031-exchange.jpg"
+          alt="Luxury Florida Property"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center px-6">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-white tracking-tight mb-6 italic">
             Ready to Begin Your 1031 Exchange in {location.name}?
           </h2>
-          <p className="mt-4 text-white/80">
+          <p className="text-white/80 max-w-xl mx-auto mb-8">
             Our Jacksonville-based team helps investors stay compliant, on time, and fully informed throughout the exchange process.
           </p>
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/contact/"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-white/90"
+              href="/contact"
+              className="inline-flex items-center justify-center bg-white text-[#1a1a1a] px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#f5f1eb] transition-all"
             >
-              Get Started
+              <span>Get Started</span>
+              <ArrowIcon className="ml-3" />
             </Link>
             <a
               href={`tel:${PHONE.dial}`}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-white/10"
+              className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
             >
-              Call {PHONE.formatted}
+              {PHONE.formatted}
             </a>
           </div>
         </div>
-      </div>
-      <Script id="breadcrumb-jsonld" type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: breadcrumbItems.map((item, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: item.label,
-            item: item.href
-              ? `${SITE_URL}${item.href}`
-              : undefined,
-          })),
-        })}
-      </Script>
+      </section>
+
       <Script id="location-jsonld" type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -311,4 +294,3 @@ export default async function LocationPage({ params }: Props) {
     </div>
   );
 }
-
