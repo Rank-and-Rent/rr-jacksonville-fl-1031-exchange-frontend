@@ -187,13 +187,6 @@ function ChevronIcon({ direction = "down" }: { direction?: "up" | "down" }) {
 export default function HomePage() {
   return (
     <>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-6 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#1a1a1a] focus:shadow-lg"
-      >
-        Skip to main content
-      </a>
-
         <main id="main-content">
         {/* Hero Section with Video Background */}
         <section className="video-hero relative h-screen min-h-[700px] flex items-center justify-center">

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { servicesData } from "@/data/services";
 
 const PHONE = {
   formatted: "(904) 664-9656",
@@ -18,6 +19,9 @@ const propertyTypes = [
   { name: "Industrial", href: "/property-types/industrial" },
   { name: "Hospitality", href: "/property-types/hospitality" },
 ];
+
+// Get top services for dropdown
+const topServices = servicesData.slice(0, 8);
 
 function ChevronDown() {
   return (
@@ -66,10 +70,13 @@ function CloseIcon() {
 export default function Header() {
   const pathname = usePathname();
   const [propertiesOpen, setPropertiesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const propertiesRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const propertiesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +91,7 @@ export default function Header() {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setPropertiesOpen(false);
+        setServicesOpen(false);
         setMobileMenuOpen(false);
       }
     };
@@ -97,16 +105,31 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+  const handlePropertiesMouseEnter = () => {
+    if (propertiesTimeoutRef.current) {
+      clearTimeout(propertiesTimeoutRef.current);
     }
+    setServicesOpen(false);
     setPropertiesOpen(true);
   };
 
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
+  const handlePropertiesMouseLeave = () => {
+    propertiesTimeoutRef.current = setTimeout(() => {
       setPropertiesOpen(false);
+    }, 300);
+  };
+
+  const handleServicesMouseEnter = () => {
+    if (servicesTimeoutRef.current) {
+      clearTimeout(servicesTimeoutRef.current);
+    }
+    setPropertiesOpen(false);
+    setServicesOpen(true);
+  };
+
+  const handleServicesMouseLeave = () => {
+    servicesTimeoutRef.current = setTimeout(() => {
+      setServicesOpen(false);
     }, 300);
   };
 
@@ -125,8 +148,8 @@ export default function Header() {
             <div
               ref={propertiesRef}
               className="relative"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+              onMouseEnter={handlePropertiesMouseEnter}
+              onMouseLeave={handlePropertiesMouseLeave}
             >
               <button
                 type="button"
@@ -140,8 +163,8 @@ export default function Header() {
               {propertiesOpen && (
                 <div
                   className="absolute left-0 top-full mt-4 w-56 bg-[#1a1a1a] border border-white/10 shadow-2xl"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseEnter={handlePropertiesMouseEnter}
+                  onMouseLeave={handlePropertiesMouseLeave}
                 >
                   <div className="py-2">
                     {propertyTypes.map((type) => (
@@ -161,6 +184,52 @@ export default function Header() {
                         onClick={() => setPropertiesOpen(false)}
                       >
                         View All Types
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div
+              ref={servicesRef}
+              className="relative"
+              onMouseEnter={handleServicesMouseEnter}
+              onMouseLeave={handleServicesMouseLeave}
+            >
+              <button
+                type="button"
+                aria-expanded={servicesOpen}
+                aria-haspopup="true"
+                className="nav-link flex items-center"
+              >
+                Services
+                <ChevronDown />
+              </button>
+              {servicesOpen && (
+                <div
+                  className="absolute left-0 top-full mt-4 w-72 bg-[#1a1a1a] border border-white/10 shadow-2xl"
+                  onMouseEnter={handleServicesMouseEnter}
+                  onMouseLeave={handleServicesMouseLeave}
+                >
+                  <div className="py-2">
+                    {topServices.map((service) => (
+                      <Link
+                        key={service.route}
+                        href={service.route}
+                        className="block px-5 py-3 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        {service.name}
+                      </Link>
+                    ))}
+                    <div className="border-t border-white/10 mt-2 pt-2">
+                      <Link
+                        href="/services"
+                        className="block px-5 py-3 text-sm text-[#c9a962] hover:text-white transition-colors"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        View All {servicesData.length} Services
                       </Link>
                     </div>
                   </div>
@@ -312,6 +381,25 @@ export default function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {type.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Services Sub-nav */}
+                <div className="pt-8 border-t border-white/10">
+                  <p className="text-xs tracking-[0.3em] uppercase text-[#c9a962] mb-6">
+                    Our Services
+                  </p>
+                  <div className="grid grid-cols-1 gap-3">
+                    {topServices.map((service) => (
+                      <Link
+                        key={service.route}
+                        href={service.route}
+                        className="text-sm text-white/70 hover:text-white transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {service.name}
                       </Link>
                     ))}
                   </div>
