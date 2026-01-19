@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Satisfy&family=Mrs+Saint+Delafield&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Allura&display=swap');
 
 :root {
   color-scheme: dark;
@@ -11,7 +11,7 @@
   --color-cream: #f5f1eb;
   --color-gold: #c9a962;
   --color-gold-light: #dfc78a;
-  --font-cursive: 'Allura', cursive;
+  --font-signature: 'Mrs Saint Delafield', cursive;
   --font-display: 'Cormorant Garamond', Georgia, serif;
 }
 
@@ -32,13 +32,15 @@ body {
   outline-offset: 2px;
 }
 
-/* Cursive Logo Style */
+/* Signature Logo Style - Like Jade Mills */
 .logo-cursive {
-  font-family: var(--font-cursive);
-  font-size: 2.5rem;
+  font-family: var(--font-signature);
+  font-size: 2rem;
+  font-weight: 400;
   color: white;
   letter-spacing: 0.02em;
-  line-height: 1.2;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* Display Font */
@@ -95,37 +97,6 @@ body {
 .property-item.next {
   opacity: 0.5;
   filter: blur(2px);
-}
-
-/* Rotating Text Animation */
-@keyframes textFlipIn {
-  0% {
-    opacity: 0;
-    transform: translateY(100%) rotateX(-90deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-  }
-}
-
-@keyframes textFlipOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-100%) rotateX(90deg);
-  }
-}
-
-.text-flip-enter {
-  animation: textFlipIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.text-flip-exit {
-  animation: textFlipOut 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /* Gold Underline Animation */
@@ -193,8 +164,8 @@ body {
 
 /* Carousel Navigation */
 .carousel-btn {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: white;
   display: flex;
@@ -211,8 +182,6 @@ body {
 
 .carousel-btn svg {
   color: var(--color-gold);
-  width: 20px;
-  height: 20px;
 }
 
 /* Section Divider */
@@ -288,49 +257,6 @@ body {
   border-color: var(--color-gold);
 }
 
-/* Hamburger Menu */
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.hamburger span {
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-/* Smooth Scroll Container */
-.scroll-smooth {
-  scroll-behavior: smooth;
-}
-
-/* Image Loading Shimmer */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.image-loading {
-  background: linear-gradient(
-    90deg,
-    var(--color-charcoal) 0%,
-    var(--color-charcoal-light) 50%,
-    var(--color-charcoal) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -349,15 +275,55 @@ body {
   background: var(--color-gold);
 }
 
-/* Media Queries for Responsive Typography */
+/* Luxury Page Styles */
+.luxury-page {
+  background: var(--color-charcoal);
+  color: var(--color-cream);
+}
+
+.luxury-page-light {
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+}
+
+/* Service Card Styles */
+.service-card {
+  background: var(--color-charcoal-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.service-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-4px);
+}
+
+/* Responsive Logo */
 @media (min-width: 768px) {
   .logo-cursive {
-    font-size: 3rem;
+    font-size: 2.25rem;
   }
 }
 
 @media (min-width: 1024px) {
   .logo-cursive {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
+  }
+}
+
+/* Hero Logo Sizing */
+.logo-hero {
+  font-size: 3rem;
+}
+
+@media (min-width: 768px) {
+  .logo-hero {
+    font-size: 4.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-hero {
+    font-size: 5.5rem;
   }
 }

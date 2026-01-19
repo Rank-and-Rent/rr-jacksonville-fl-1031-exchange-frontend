@@ -8,43 +8,43 @@ const propertyTypes = [
   {
     name: "Triple Net",
     slug: "triple-net",
-    description: "Premium NNN investments with creditworthy corporate tenants who cover all property expenses, providing stable passive income with minimal landlord responsibilities.",
+    description: "Premium NNN investments with creditworthy corporate tenants who cover all property expenses.",
     image: "/inventory/retail-1031-exchange.jpg",
   },
   {
     name: "Land",
     slug: "land",
-    description: "Raw land, agricultural properties, and development parcels across Northeast Florida. Ideal for long-term appreciation and portfolio diversification.",
+    description: "Raw land, agricultural properties, and development parcels across Northeast Florida.",
     image: "/inventory/land-agricultural-1031-exchange.jpg",
   },
   {
     name: "Residential",
     slug: "residential",
-    description: "Single-family rentals, vacation properties, and residential portfolios in Jacksonville's most desirable neighborhoods and beach communities.",
+    description: "Single-family rentals, vacation properties, and residential portfolios in desirable neighborhoods.",
     image: "/inventory/multifamily-1031-exchange.jpg",
   },
   {
     name: "Commercial",
     slug: "commercial",
-    description: "Office buildings, mixed-use developments, and professional properties in prime Jacksonville locations with strong tenant demand.",
+    description: "Office buildings, mixed-use developments, and professional properties in prime locations.",
     image: "/inventory/medical-office-1031-exchange.jpg",
   },
   {
     name: "Retail",
     slug: "retail",
-    description: "Shopping centers, strip malls, and freestanding retail properties positioned in high-traffic corridors throughout Northeast Florida.",
+    description: "Shopping centers, strip malls, and freestanding retail properties in high-traffic corridors.",
     image: "/inventory/retail-1031-exchange.jpg",
   },
   {
     name: "Industrial",
     slug: "industrial",
-    description: "Warehouses, distribution centers, and flex spaces supporting JAXPORT, Cecil Commerce, and major interstate corridors.",
+    description: "Warehouses, distribution centers, and flex spaces supporting major logistics corridors.",
     image: "/inventory/industrial-1031-exchange.jpg",
   },
   {
     name: "Hospitality",
     slug: "hospitality",
-    description: "Hotels, boutique resorts, and marinas balancing leisure demand with operational controls in Florida's premier coastal markets.",
+    description: "Hotels, boutique resorts, and marinas in Florida's premier coastal markets.",
     image: "/inventory/hospitality-resort-1031-exchange.jpg",
   },
 ];
@@ -52,8 +52,8 @@ const propertyTypes = [
 function ChevronLeft() {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -69,8 +69,8 @@ function ChevronLeft() {
 function ChevronRight() {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -95,7 +95,7 @@ export default function PropertyTypesCarousel() {
     setTimeout(() => {
       setCurrentIndex((prev) => (prev + 1) % propertyTypes.length);
       setIsAnimating(false);
-    }, 300);
+    }, 400);
   }, [isAnimating]);
 
   const goToPrev = useCallback(() => {
@@ -105,12 +105,12 @@ export default function PropertyTypesCarousel() {
     setTimeout(() => {
       setCurrentIndex((prev) => (prev - 1 + propertyTypes.length) % propertyTypes.length);
       setIsAnimating(false);
-    }, 300);
+    }, 400);
   }, [isAnimating]);
 
   // Auto-advance
   useEffect(() => {
-    const interval = setInterval(goToNext, 5000);
+    const interval = setInterval(goToNext, 6000);
     return () => clearInterval(interval);
   }, [goToNext]);
 
@@ -139,62 +139,75 @@ export default function PropertyTypesCarousel() {
         {/* Carousel */}
         <div className="relative">
           {/* Main Carousel Content */}
-          <div className="flex items-center justify-center gap-0 md:gap-4 lg:gap-8">
-            {/* Previous Slide (Partial) */}
-            <div className="hidden lg:block w-[200px] xl:w-[280px] opacity-50 relative">
-              <div className="relative aspect-[3/4] overflow-hidden">
+          <div className="flex items-end justify-center gap-4 md:gap-8 lg:gap-12">
+            {/* Previous Slide */}
+            <div className="hidden md:block w-[180px] lg:w-[220px] xl:w-[260px] flex-shrink-0">
+              <div className="relative aspect-[4/5] overflow-hidden opacity-60">
                 <Image
                   src={prevType.image}
                   alt={prevType.name}
                   fill
-                  className="object-cover blur-[2px]"
-                  sizes="280px"
+                  className="object-cover"
+                  sizes="260px"
                 />
               </div>
-              <div className="mt-4 overflow-hidden">
-                <h3 className="font-display text-2xl xl:text-3xl text-white/50 italic truncate">
+              {/* Previous Title & Description - Always Visible */}
+              <div className="mt-4">
+                <h3 className="font-display text-xl lg:text-2xl text-white/50 italic">
                   {prevType.name}
                 </h3>
+                <p className="text-xs text-white/30 mt-1 line-clamp-2">
+                  {prevType.description}
+                </p>
               </div>
             </div>
 
             {/* Navigation Button - Left */}
             <button
               onClick={goToPrev}
-              className="carousel-btn absolute left-0 lg:relative z-20 flex-shrink-0"
+              className="carousel-btn absolute left-2 md:relative z-20 flex-shrink-0"
               aria-label="Previous property type"
             >
               <ChevronLeft />
             </button>
 
             {/* Current Slide (Center) */}
-            <div className="flex-1 max-w-xl lg:max-w-lg xl:max-w-xl mx-4 md:mx-8">
-              <div className="relative aspect-[3/4] overflow-hidden">
+            <div className="w-full max-w-[320px] md:max-w-[340px] lg:max-w-[380px] flex-shrink-0">
+              <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
                   src={currentType.image}
                   alt={currentType.name}
                   fill
-                  className="object-cover transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 500px"
+                  className="object-cover transition-transform duration-500"
+                  sizes="(max-width: 768px) 320px, 380px"
                   priority
                 />
               </div>
 
-              {/* Title with flip animation */}
-              <div className="mt-6 overflow-hidden h-[120px] md:h-[80px]">
+              {/* Title and Description with flip animation - grouped together */}
+              <div className="mt-6 h-[100px] md:h-[90px] overflow-hidden perspective-[1000px]">
                 <div
-                  className={`transition-all duration-500 transform ${
+                  className={`transition-all duration-400 transform-gpu ${
                     isAnimating
                       ? direction === "next"
-                        ? "-translate-y-full opacity-0"
-                        : "translate-y-full opacity-0"
+                        ? "-translate-y-full rotateX-90 opacity-0"
+                        : "translate-y-full rotateX-90-neg opacity-0"
                       : "translate-y-0 opacity-100"
                   }`}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    transform: isAnimating
+                      ? direction === "next"
+                        ? "translateY(-100%) rotateX(90deg)"
+                        : "translateY(100%) rotateX(-90deg)"
+                      : "translateY(0) rotateX(0deg)",
+                    transition: "transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease",
+                  }}
                 >
-                  <h3 className="font-display text-4xl md:text-5xl text-white italic text-center">
+                  <h3 className="font-display text-3xl md:text-4xl text-white italic text-center">
                     {currentType.name}
                   </h3>
-                  <p className="text-sm text-white/60 text-center mt-2 line-clamp-2">
+                  <p className="text-sm text-white/60 text-center mt-2 line-clamp-2 px-4">
                     {currentType.description}
                   </p>
                 </div>
@@ -226,27 +239,31 @@ export default function PropertyTypesCarousel() {
             {/* Navigation Button - Right */}
             <button
               onClick={goToNext}
-              className="carousel-btn absolute right-0 lg:relative z-20 flex-shrink-0"
+              className="carousel-btn absolute right-2 md:relative z-20 flex-shrink-0"
               aria-label="Next property type"
             >
               <ChevronRight />
             </button>
 
-            {/* Next Slide (Partial) */}
-            <div className="hidden lg:block w-[200px] xl:w-[280px] opacity-50 relative">
-              <div className="relative aspect-[3/4] overflow-hidden">
+            {/* Next Slide */}
+            <div className="hidden md:block w-[180px] lg:w-[220px] xl:w-[260px] flex-shrink-0">
+              <div className="relative aspect-[4/5] overflow-hidden opacity-60">
                 <Image
                   src={nextType.image}
                   alt={nextType.name}
                   fill
-                  className="object-cover blur-[2px]"
-                  sizes="280px"
+                  className="object-cover"
+                  sizes="260px"
                 />
               </div>
-              <div className="mt-4 overflow-hidden">
-                <h3 className="font-display text-2xl xl:text-3xl text-white/50 italic truncate">
+              {/* Next Title & Description - Always Visible */}
+              <div className="mt-4">
+                <h3 className="font-display text-xl lg:text-2xl text-white/50 italic">
                   {nextType.name}
                 </h3>
+                <p className="text-xs text-white/30 mt-1 line-clamp-2">
+                  {nextType.description}
+                </p>
               </div>
             </div>
           </div>
@@ -263,7 +280,7 @@ export default function PropertyTypesCarousel() {
                   setTimeout(() => {
                     setCurrentIndex(index);
                     setIsAnimating(false);
-                  }, 300);
+                  }, 400);
                 }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex

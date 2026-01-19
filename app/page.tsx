@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
-import ContactForm from "@/components/contact-form";
 import { locationsData } from "@/data/locations";
+import { servicesData } from "@/data/services";
 import PropertyTypesCarousel from "@/components/property-types-carousel";
 import ConnectButton from "@/components/connect-button";
 
@@ -73,6 +73,16 @@ const neighborhoods = [
     image: "/locations/riverside-1031-exchange.jpg",
   },
 ];
+
+// Get top services by category for display
+const topServices = [
+  servicesData.find(s => s.slug === "qualified-intermediary-coordination"),
+  servicesData.find(s => s.slug === "45-day-identification-strategy"),
+  servicesData.find(s => s.slug === "reverse-exchange-coordination"),
+  servicesData.find(s => s.slug === "dst-placement-assistance"),
+  servicesData.find(s => s.slug === "timeline-management"),
+  servicesData.find(s => s.slug === "boot-planning"),
+].filter(Boolean);
 
 const faqItems = [
   {
@@ -193,7 +203,7 @@ export default function HomePage() {
         Skip to main content
       </a>
 
-        <main id="main-content">
+      <main id="main-content">
         {/* Hero Section with Video Background */}
         <section className="video-hero relative h-screen min-h-[700px] flex items-center justify-center">
           <video
@@ -212,7 +222,7 @@ export default function HomePage() {
               Florida&apos;s Premier 1031 Exchange Specialists
             </p>
 
-            <h1 className="logo-cursive text-5xl md:text-7xl lg:text-8xl text-white mb-6">
+            <h1 className="logo-cursive logo-hero text-white mb-6">
               Jacksonville 1031
             </h1>
 
@@ -288,7 +298,7 @@ export default function HomePage() {
                   , and{" "}
                   <Link href="/service-areas" className="underline decoration-[#c9a962] decoration-2 underline-offset-4 hover:text-[#c9a962] transition-colors">
                     more
-              </Link>
+                  </Link>
                   .
                 </p>
 
@@ -307,6 +317,52 @@ export default function HomePage() {
         {/* Property Types Carousel Section */}
         <PropertyTypesCarousel />
 
+        {/* Services Section */}
+        <section className="bg-[#1a1a1a] py-20 md:py-28 border-t border-white/10">
+          <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="section-divider" />
+              <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+                Expert Guidance
+              </span>
+            </div>
+
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight">
+                Our Services
+              </h2>
+              <Link
+                href="/services"
+                className="mt-6 lg:mt-0 inline-flex items-center gap-2 text-sm text-[#c9a962] hover:text-white transition-colors tracking-[0.15em] uppercase"
+              >
+                <span>View All {servicesData.length} Services</span>
+                <ArrowIcon className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {topServices.map((service) => service && (
+                <Link
+                  key={service.slug}
+                  href={service.route}
+                  className="service-card group block p-8 rounded-sm"
+                >
+                  <h3 className="font-display text-xl md:text-2xl text-white group-hover:text-[#c9a962] transition-colors mb-4">
+                    {service.name}
+                  </h3>
+                  <p className="text-sm text-white/60 leading-relaxed mb-6">
+                    {service.short}
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-xs text-[#c9a962] tracking-[0.15em] uppercase">
+                    Learn More
+                    <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Neighborhoods Section */}
         <section className="bg-[#1a1a1a] py-20 md:py-28">
           <div className="max-w-[1600px] mx-auto px-6 md:px-10">
@@ -315,7 +371,7 @@ export default function HomePage() {
               <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
                 Jacksonville 1031 Exchange
               </span>
-          </div>
+            </div>
 
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight mb-16">
               Neighborhoods We Serve
@@ -329,13 +385,13 @@ export default function HomePage() {
                   className="neighborhood-card group block"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden mb-4">
-                      <Image
+                    <Image
                       src={area.image}
                       alt={`${area.name} Real Estate`}
-                        fill
+                      fill
                       className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
                   </div>
                   <h3 className="font-display text-xl md:text-2xl text-white group-hover:text-[#c9a962] transition-colors">
                     {area.name}
@@ -358,7 +414,7 @@ export default function HomePage() {
 
         {/* Connect CTA Section */}
         <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
-                          <Image
+          <Image
             src="/locations/ponte-vedra-beach-fl-1031-exchange.jpg"
             alt="Luxury Florida Property"
             fill
@@ -372,13 +428,13 @@ export default function HomePage() {
               Connect With Jacksonville 1031
             </h2>
 
-              <Link
+            <Link
               href="#contact"
               className="btn-luxury inline-flex"
-              >
+            >
               <span>Contact Us</span>
               <ArrowIcon />
-              </Link>
+            </Link>
           </div>
         </section>
 
@@ -452,27 +508,27 @@ export default function HomePage() {
               </div>
 
               {/* Contact Us */}
-                  <div>
+              <div>
                 <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
                   Contact Us
                 </h4>
                 <div className="space-y-2 text-sm">
                   <p className="font-medium">Jacksonville 1031 Exchange</p>
                   <p className="text-[#1a1a1a]/70">FL License #BK3456789</p>
-                    <a
-                      href={`tel:${PHONE.dial}`}
+                  <a
+                    href={`tel:${PHONE.dial}`}
                     className="block text-[#c9a962] hover:underline"
-                    >
-                      {PHONE.formatted}
-                    </a>
-                    <a
-                      href={`mailto:${EMAIL}`}
+                  >
+                    {PHONE.formatted}
+                  </a>
+                  <a
+                    href={`mailto:${EMAIL}`}
                     className="block text-[#c9a962] hover:underline"
-                    >
-                      {EMAIL}
-                    </a>
-                  </div>
+                  >
+                    {EMAIL}
+                  </a>
                 </div>
+              </div>
 
               {/* Address */}
               <div>
@@ -528,14 +584,14 @@ export default function HomePage() {
             <div className="mt-16 flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-[#1a1a1a]/10">
               <div className="logo-cursive text-3xl text-[#1a1a1a]">
                 Jacksonville 1031
-          </div>
+              </div>
               <p className="text-xs text-[#1a1a1a]/50 max-w-xl text-center md:text-right">
                 This site helps investors identify potential replacement properties for Section 1031 exchanges. This site is not a Qualified Intermediary, law firm, broker, or CPA. Users should consult a Qualified Intermediary and tax advisor before acting.
               </p>
             </div>
           </div>
         </section>
-        </main>
+      </main>
 
       <ConnectButton />
 
