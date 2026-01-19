@@ -1,22 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import Script from "next/script";
-import Breadcrumbs from "@/components/breadcrumbs";
-import { Inter, Playfair_Display } from "next/font/google";
 import { propertyTypesData } from "@/data/property-types";
 import { servicesData } from "@/data/services";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
 
 const PRIMARY_CITY = "Jacksonville";
 const PRIMARY_STATE_ABBR = "FL";
@@ -72,6 +59,24 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 export default async function PropertyTypePage({ params }: Props) {
   const { slug } = await params;
   const propertyType = propertyTypesData.find((t) => t.slug === slug);
@@ -91,118 +96,169 @@ export default async function PropertyTypePage({ params }: Props) {
     propertyType.name.toLowerCase().includes(s.name.toLowerCase())
   );
 
-  const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: "Property Types", href: "/property-types/" },
-    { label: propertyType.name },
-  ];
+  // Get other property types for related section
+  const relatedTypes = propertyTypesData
+    .filter((t) => t.slug !== propertyType.slug)
+    .slice(0, 6);
 
   return (
-    <div className={`${inter.className} ${playfair.variable} bg-[#F9FAFB] text-[#1F2937]`}>
-      <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
-        <Breadcrumbs items={breadcrumbItems} />
-        <h1
-          className={`${playfair.variable} text-4xl font-semibold leading-[1.15] tracking-tight text-[#003366] md:text-5xl`}
-          style={{ fontFamily: 'var(--font-playfair), serif' }}
-        >
-          {propertyType.name} 1031 Exchange Properties
-        </h1>
-        <p className="mt-4 text-lg leading-relaxed text-[#1F2937]/80">
-          Find {propertyType.name} properties for your 1031 exchange replacement property identification in {PRIMARY_CITY}, {PRIMARY_STATE_ABBR}. We help investors identify qualified replacement properties within the 45 day identification deadline.
-        </p>
-        
-        {relatedService && (
-          <div className="mt-8">
-            <Link
-              href={relatedService.route}
-              className="inline-block rounded-full bg-[#003366] px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-[#01264f]"
-            >
-              Learn About {relatedService.name}
-            </Link>
+    <div className="luxury-page">
+      {/* Hero Section */}
+      <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/locations/jacksonville-1031-exchange.jpg"
+          alt={`${propertyType.name} Properties`}
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center px-6">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              Property Types
+            </span>
+            <div className="section-divider" />
           </div>
-        )}
-
-        <div className="mt-12 rounded-3xl border border-[#E5E7EB] bg-white p-8">
-          <h2
-            className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-            style={{ fontFamily: 'var(--font-playfair), serif' }}
-          >
-            About {propertyType.name} Properties
-          </h2>
-          <p className="mt-4 text-[#1F2937]/80 leading-relaxed">
-            {propertyType.name} properties can qualify as like-kind replacement properties for 1031 exchanges. These properties offer investors opportunities to defer capital gains taxes while diversifying their real estate portfolios.
-          </p>
-          <p className="mt-4 text-[#1F2937]/80 leading-relaxed">
-            We provide nationwide property identification support to help investors find qualified {propertyType.name} replacement properties within the 45 day identification deadline. Our team coordinates with Qualified Intermediaries and tax advisors throughout the exchange process.
-          </p>
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight">
+            {propertyType.name}
+          </h1>
         </div>
+      </section>
 
-        <div className="mt-12">
-          <h2
-            className={`${playfair.variable} text-2xl font-semibold tracking-tight text-[#003366]`}
-            style={{ fontFamily: 'var(--font-playfair), serif' }}
-          >
+      {/* Main Content */}
+      <section className="bg-[#f5f1eb] text-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6 md:px-10">
+          <p className="text-lg leading-relaxed text-[#1a1a1a]/80 mb-8">
+            Find {propertyType.name} properties for your 1031 exchange replacement property identification in {PRIMARY_CITY}, {PRIMARY_STATE_ABBR}. We help investors identify qualified replacement properties within the 45 day identification deadline.
+          </p>
+
+          <div className="prose prose-lg max-w-none">
+            <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight text-[#1a1a1a] mt-12 mb-6">
+              About {propertyType.name} Properties
+            </h2>
+            <p className="text-[#1a1a1a]/70 leading-relaxed">
+              {propertyType.name} properties can qualify as like-kind replacement properties for 1031 exchanges. These properties offer investors opportunities to defer capital gains taxes while diversifying their real estate portfolios.
+            </p>
+            <p className="text-[#1a1a1a]/70 leading-relaxed mt-4">
+              We provide nationwide property identification support to help investors find qualified {propertyType.name} replacement properties within the 45 day identification deadline. Our team coordinates with Qualified Intermediaries and tax advisors throughout the exchange process.
+            </p>
+          </div>
+
+          {relatedService && (
+            <div className="mt-12">
+              <Link
+                href={relatedService.route}
+                className="inline-flex items-center justify-center bg-[#1a1a1a] text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#2a2a2a] transition-all"
+              >
+                <span>Learn About {relatedService.name}</span>
+                <ArrowIcon className="ml-3" />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Related Property Types */}
+      <section className="bg-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              Explore More
+            </span>
+          </div>
+
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-white tracking-tight mb-16">
             Related Property Types
           </h2>
-          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {propertyTypesData
-              .filter((t) => t.slug !== propertyType.slug)
-              .slice(0, 6)
-              .map((type) => (
-                <Link
-                  key={type.slug}
-                  href={type.route}
-                  className="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <h3 className="text-xl font-semibold text-[#003366]">
-                    {type.name}
-                  </h3>
-                </Link>
-              ))}
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedTypes.map((type) => (
+              <Link
+                key={type.slug}
+                href={type.route}
+                className="group block bg-[#2a2a2a] p-8 hover:bg-[#333] transition-all"
+              >
+                <h3 className="font-display text-xl md:text-2xl text-white group-hover:text-[#c9a962] transition-colors">
+                  {type.name}
+                </h3>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/property-types"
+              className="inline-flex items-center justify-center bg-transparent border border-white/30 text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
+            >
+              <span>View All Property Types</span>
+              <ArrowIcon className="ml-3" />
+            </Link>
           </div>
         </div>
+      </section>
 
-        <div className="mt-12 rounded-3xl bg-gradient-to-r from-[#003366] via-[#0F4C81] to-[#F5B800] p-8 text-white">
-          <h2
-            className={`${playfair.variable} text-2xl font-semibold tracking-tight`}
-            style={{ fontFamily: 'var(--font-playfair), serif' }}
-          >
-            Ready to Find {propertyType.name} Replacement Properties?
+      {/* CTA Section */}
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/locations/ponte-vedra-beach-fl-1031-exchange.jpg"
+          alt="Luxury Florida Property"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center px-6">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-white tracking-tight mb-6 italic">
+            Ready to Find {propertyType.name} Properties?
           </h2>
-          <p className="mt-4 text-white/80">
+          <p className="text-white/80 max-w-xl mx-auto mb-8">
             Our Jacksonville-based team helps investors stay compliant, on time, and fully informed throughout the exchange process.
           </p>
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href={`/contact/?projectType=${encodeURIComponent(propertyType.name)}`}
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#003366] transition hover:bg-white/90"
+              href="/contact"
+              className="inline-flex items-center justify-center bg-white text-[#1a1a1a] px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#f5f1eb] transition-all"
             >
-              Get Started
+              <span>Contact Us</span>
+              <ArrowIcon className="ml-3" />
             </Link>
             <a
               href={`tel:${PHONE.dial}`}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-white/10"
+              className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
             >
-              Call {PHONE.formatted}
+              {PHONE.formatted}
             </a>
           </div>
         </div>
-      </div>
+      </section>
+
       <Script id="breadcrumb-jsonld" type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
-          itemListElement: breadcrumbItems.map((item, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: item.label,
-            item: item.href
-              ? `${SITE_URL}${item.href}`
-              : undefined,
-          })),
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: SITE_URL,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Property Types",
+              item: `${SITE_URL}/property-types`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: propertyType.name,
+            },
+          ],
         })}
       </Script>
     </div>
   );
 }
-

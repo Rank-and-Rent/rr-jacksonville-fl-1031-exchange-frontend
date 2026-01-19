@@ -2,6 +2,41 @@ import type { PropertyTypeItem } from "./types";
 
 export const propertyTypesData: PropertyTypeItem[] = [
   {
+    slug: "triple-net",
+    name: "Triple Net",
+    route: "/property-types/triple-net",
+  },
+  {
+    slug: "land",
+    name: "Land",
+    route: "/property-types/land",
+  },
+  {
+    slug: "residential",
+    name: "Residential",
+    route: "/property-types/residential",
+  },
+  {
+    slug: "commercial",
+    name: "Commercial",
+    route: "/property-types/commercial",
+  },
+  {
+    slug: "retail",
+    name: "Retail",
+    route: "/property-types/retail",
+  },
+  {
+    slug: "industrial",
+    name: "Industrial",
+    route: "/property-types/industrial",
+  },
+  {
+    slug: "hospitality",
+    name: "Hospitality",
+    route: "/property-types/hospitality",
+  },
+  {
     slug: "convenience-store-gas-c-store",
     name: "Convenience Store Gas C Store",
     route: "/property-types/convenience-store-gas-c-store",
