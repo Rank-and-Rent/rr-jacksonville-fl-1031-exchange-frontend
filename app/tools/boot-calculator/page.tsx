@@ -1,21 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
-import Breadcrumbs from "@/components/breadcrumbs";
+import Image from "next/image";
 import BootCalculator from "@/components/tools/BootCalculator";
-import { Inter, Playfair_Display } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
 
 const PRIMARY_CITY = "Jacksonville";
 const PRIMARY_STATE_ABBR = "FL";
@@ -40,11 +27,23 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumbItems = [
-  { label: "Home", href: "/" },
-  { label: "Tools", href: "/tools" },
-  { label: "Boot Calculator" },
-];
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  );
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -53,15 +52,6 @@ const jsonLd = {
   description:
     "Calculate boot (cash received, mortgage relief, non-like-kind property) and estimate tax implications for your 1031 exchange.",
   url: `${SITE_URL}/tools/boot-calculator`,
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: breadcrumbItems.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.label,
-      item: item.href ? `${SITE_URL}${item.href}` : undefined,
-    })),
-  },
   about: {
     "@type": "SoftwareApplication",
     name: "Boot Calculator",
@@ -77,71 +67,126 @@ const jsonLd = {
 
 export default function BootCalculatorPage() {
   return (
-    <div className={`${inter.className} ${playfair.variable} bg-[#F9FAFB] text-[#1F2937]`}>
-      <div className="mx-auto max-w-4xl px-6 py-12 md:px-8 md:py-20">
-        <Breadcrumbs items={breadcrumbItems} />
-        <h1
-          className="text-3xl font-bold text-[#003366] md:text-4xl mb-4"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
-          Boot Calculator
-        </h1>
-        <p className="text-lg text-gray-700 mb-8">
-          Calculate boot (cash received, mortgage relief, and non-like-kind property) and estimate
-          potential tax implications for your 1031 exchange. Boot is any cash or non-like-kind
-          property received in an exchange and may be subject to capital gains tax.
-        </p>
-
-        <BootCalculator />
-
-        <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
-          <p className="text-sm text-gray-700">
-            <strong>Educational content only.</strong> Not tax, legal, or investment advice.
-            Results are estimates only. Consult a qualified intermediary and tax advisor before
-            making decisions. Florida does not impose a state real estate transfer tax. Recording
-            fees and title insurance premiums still apply.
-          </p>
+    <div className="luxury-page">
+      {/* Hero Section */}
+      <section className="relative h-[30vh] min-h-[250px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/locations/jacksonville-beach-fl-1031-exchange.jpg"
+          alt="Boot Calculator"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="relative z-10 text-center px-6">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              Free Calculator
+            </span>
+            <div className="section-divider" />
+          </div>
+          <h1 className="font-display text-4xl md:text-5xl font-light text-white tracking-tight">
+            Boot Calculator
+          </h1>
         </div>
+      </section>
 
-        <div className="mt-12 border-t border-gray-200 pt-8">
-          <h2
-            className="text-2xl font-bold text-[#003366] mb-4"
-            style={{ fontFamily: "var(--font-playfair), serif" }}
-          >
+      {/* Content Section */}
+      <section className="bg-[#f5f1eb] text-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6 md:px-10">
+          <p className="text-lg leading-relaxed text-[#1a1a1a]/80 mb-12">
+            Calculate boot (cash received, mortgage relief, and non-like-kind property) and estimate
+            potential tax implications for your 1031 exchange. Boot is any cash or non-like-kind
+            property received in an exchange and may be subject to capital gains tax.
+          </p>
+
+          <BootCalculator />
+
+          <div className="mt-12 bg-white/50 p-8">
+            <p className="text-sm text-[#1a1a1a]/70 leading-relaxed">
+              <strong className="text-[#1a1a1a]">Educational content only.</strong> Not tax, legal, or investment advice.
+              Results are estimates only. Consult a qualified intermediary and tax advisor before
+              making decisions. Florida does not impose a state real estate transfer tax. Recording
+              fees and title insurance premiums still apply.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Tools */}
+      <section className="bg-[#1a1a1a] py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6 md:px-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="section-divider" />
+            <span className="text-xs tracking-[0.3em] uppercase text-[#c9a962]">
+              More Tools
+            </span>
+          </div>
+
+          <h2 className="font-display text-3xl md:text-4xl font-light text-white tracking-tight mb-12">
             Related Resources
           </h2>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                href="/services/"
-                className="text-[#003366] underline hover:text-[#F5B800]"
-              >
-                Exchange Services
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/tools/exchange-cost-estimator"
-                className="text-[#003366] underline hover:text-[#F5B800]"
-              >
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Link
+              href="/tools/exchange-cost-estimator"
+              className="group block bg-[#2a2a2a] p-8 hover:bg-[#333] transition-all"
+            >
+              <h3 className="font-display text-xl text-white group-hover:text-[#c9a962] transition-colors">
                 Exchange Cost Estimator
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/tools/identification-rules-checker"
-                className="text-[#003366] underline hover:text-[#F5B800]"
-              >
+              </h3>
+              <p className="mt-2 text-sm text-white/60">
+                Calculate QI fees, escrow costs, title insurance, and recording fees
+              </p>
+            </Link>
+            <Link
+              href="/tools/identification-rules-checker"
+              className="group block bg-[#2a2a2a] p-8 hover:bg-[#333] transition-all"
+            >
+              <h3 className="font-display text-xl text-white group-hover:text-[#c9a962] transition-colors">
                 Identification Rules Checker
-              </Link>
-            </li>
-          </ul>
+              </h3>
+              <p className="mt-2 text-sm text-white/60">
+                Validate against 3-property, 200%, or 95% identification rules
+              </p>
+            </Link>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/tools"
+              className="inline-flex items-center justify-center bg-transparent border border-white/30 text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
+            >
+              <span>View All Tools</span>
+              <ArrowIcon className="ml-3" />
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-[#f5f1eb] text-[#1a1a1a] py-20">
+        <div className="max-w-4xl mx-auto px-6 md:px-10 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-light tracking-tight mb-6 italic">
+            Need Professional Guidance?
+          </h2>
+          <p className="text-[#1a1a1a]/70 mb-8 max-w-2xl mx-auto">
+            While calculators help estimate your exchange, professional guidance is essential for success. Our team connects you with qualified intermediaries, CPAs, and attorneys throughout Florida.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center bg-[#1a1a1a] text-white px-8 py-4 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#2a2a2a] transition-all"
+          >
+            <span>Contact Us</span>
+            <ArrowIcon className="ml-3" />
+          </Link>
+        </div>
+      </section>
+
       <Script id="boot-calculator-jsonld" type="application/ld+json">
         {JSON.stringify(jsonLd)}
       </Script>
     </div>
   );
 }
-
