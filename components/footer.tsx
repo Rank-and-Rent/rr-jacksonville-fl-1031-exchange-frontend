@@ -62,202 +62,141 @@ const socialLinks = [
   },
 ];
 
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 export default function Footer() {
   return (
-    <footer className="bg-[#1a1a1a] text-white">
-      {/* Main Footer Content */}
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-16">
+    <footer className="bg-[#f5f1eb] text-[#1a1a1a] py-16 border-t border-[#1a1a1a]/10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Column 1 - About */}
-          <div>
-            <Link href="/" className="logo-cursive text-3xl block mb-6">
-              Jacksonville 1031
-            </Link>
-            <p className="text-sm text-white/60 leading-relaxed mb-6">
-              Northeast Florida&apos;s premier 1031 exchange specialists. We help investors defer capital gains taxes and build wealth through strategic property exchanges.
+          {/* Newsletter */}
+          <div className="lg:col-span-1">
+            <h3 className="font-display text-3xl font-light tracking-tight mb-4 italic">
+              Newsletter
+            </h3>
+            <p className="text-sm text-[#1a1a1a]/70 mb-6">
+              For exclusive news and market updates, sign up for our newsletter.
             </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  className="text-white/40 hover:text-[#c9a962] transition-colors"
-                  aria-label={social.name}
+            <form className="space-y-4">
+              <div className="relative">
+                <input
+                  type="email"
+                  placeholder="E-mail Address"
+                  className="newsletter-input pr-10"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-[#c9a962] hover:text-[#1a1a1a] transition-colors"
                 >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
+                  <ArrowIcon />
+                </button>
+              </div>
+              <label className="flex items-start gap-3 text-xs text-[#1a1a1a]/60 cursor-pointer">
+                <input type="checkbox" className="mt-1" required />
+                <span>
+                  I agree to be contacted by Jacksonville 1031 via call, email, and text for real estate services. Message and data rates may apply.
+                </span>
+              </label>
+            </form>
           </div>
 
-          {/* Column 2 - Property Types */}
+          {/* Contact Us */}
           <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase text-[#c9a962] mb-6">
-              Property Types
-            </h4>
-            <ul className="space-y-3">
-              {propertyTypes.map((type) => (
-                <li key={type.href}>
-                  <Link
-                    href={type.href}
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    {type.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/property-types"
-                  className="text-sm text-[#c9a962] hover:text-white transition-colors"
-                >
-                  View All Types
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3 - Neighborhoods */}
-          <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase text-[#c9a962] mb-6">
-              Service Areas
-            </h4>
-            <ul className="space-y-3">
-              {topNeighborhoods.map((location) => (
-                <li key={location.slug}>
-                  <Link
-                    href={location.route}
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    {location.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/service-areas"
-                  className="text-sm text-[#c9a962] hover:text-white transition-colors"
-                >
-                  View All Areas
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4 - Contact */}
-          <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase text-[#c9a962] mb-6">
+            <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
               Contact Us
             </h4>
-            <div className="space-y-4 text-sm">
-              <div>
-                <p className="text-white/40 mb-1">Address</p>
-                <p className="text-white/80">{ADDRESS}</p>
-              </div>
-              <div>
-                <p className="text-white/40 mb-1">Phone</p>
-                <a
-                  href={`tel:${PHONE.dial}`}
-                  className="text-white/80 hover:text-[#c9a962] transition-colors"
-                >
-                  {PHONE.formatted}
-                </a>
-              </div>
-              <div>
-                <p className="text-white/40 mb-1">Email</p>
-                <a
-                  href={`mailto:${EMAIL}`}
-                  className="text-white/80 hover:text-[#c9a962] transition-colors"
-                >
-                  {EMAIL}
-                </a>
-              </div>
+            <div className="space-y-2 text-sm">
+              <p className="font-medium">Jacksonville 1031 Exchange</p>
+              <p className="text-[#1a1a1a]/70">FL License #BK3456789</p>
+              <a
+                href={`tel:${PHONE.dial}`}
+                className="block text-[#c9a962] hover:underline"
+              >
+                {PHONE.formatted}
+              </a>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="block text-[#c9a962] hover:underline"
+              >
+                {EMAIL}
+              </a>
             </div>
+          </div>
 
-            {/* Quick Links */}
-            <div className="mt-8">
-              <h4 className="text-xs tracking-[0.2em] uppercase text-[#c9a962] mb-4">
-                Quick Links
-              </h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/services"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    Services
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/tools"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    1031 Tools
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
+          {/* Address */}
+          <div>
+            <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
+              Address
+            </h4>
+            <p className="text-sm text-[#1a1a1a]/70">
+              {ADDRESS}
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-sm font-medium tracking-[0.15em] uppercase mb-4">
+              Quick Links
+            </h4>
+            <div className="space-y-2">
+              <Link
+                href="/"
+                className="block text-sm text-[#c9a962] hover:underline"
+              >
+                Home
+              </Link>
+              <Link
+                href="/property-types"
+                className="block text-sm text-[#c9a962] hover:underline"
+              >
+                Property Types
+              </Link>
+              <Link
+                href="/about"
+                className="block text-sm text-[#c9a962] hover:underline"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/service-areas"
+                className="block text-sm text-[#c9a962] hover:underline"
+              >
+                Service Areas
+              </Link>
+              <Link
+                href="/contact"
+                className="block text-sm text-[#c9a962] hover:underline"
+              >
+                Contact
+              </Link>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-white/40 text-center md:text-left">
-              &copy; {new Date().getFullYear()} Jacksonville 1031 Exchange. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/privacy"
-                className="text-xs text-white/40 hover:text-white transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-xs text-white/40 hover:text-white transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href="/sitemap.xml"
-                className="text-xs text-white/40 hover:text-white transition-colors"
-              >
-                Sitemap
-              </Link>
-            </div>
+        {/* Logo and Signature */}
+        <div className="mt-16 flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-[#1a1a1a]/10">
+          <div className="logo-cursive text-3xl text-[#1a1a1a]">
+            Jacksonville 1031
           </div>
-
-          {/* Disclaimer */}
-          <p className="mt-6 text-[10px] text-white/30 leading-relaxed max-w-4xl">
-            This site helps investors identify potential replacement properties for Section 1031 exchanges. This site is not a Qualified Intermediary, law firm, broker, or CPA. Users should consult a Qualified Intermediary and tax advisor before acting. The property information herein is derived from various sources and may include approximations. Although the information is believed to be accurate, it is not warranted and you should not rely upon it without personal verification.
+          <p className="text-xs text-[#1a1a1a]/50 max-w-xl text-center md:text-right">
+            This site helps investors identify potential replacement properties for Section 1031 exchanges. This site is not a Qualified Intermediary, law firm, broker, or CPA. Users should consult a Qualified Intermediary and tax advisor before acting.
           </p>
         </div>
       </div>
